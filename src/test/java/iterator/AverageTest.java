@@ -9,7 +9,7 @@ class AverageTest {
 
     @Test
     void next() {
-      Average<Rating> avg = new Average<>(Rating.class, i -> true, "rating", )
+//      Average<Rating> avg = new Average<>(Rating.class, i -> true, "rating", )
     }
 
     @Test

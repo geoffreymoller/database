@@ -1,13 +1,13 @@
 package db;
 
 public class Field {
-    private int tid;
+    private int index;
     private String name;
     private Class type;
     private Boolean nullable;
 
-    public int getTid() {
-        return tid;
+    public int getIndex() {
+        return index;
     }
 
     public String getName() {
@@ -22,8 +22,8 @@ public class Field {
         return nullable;
     }
 
-    public Field(int tid, String name, Class type, Boolean nullable) {
-        this.tid = tid;
+    public Field(int index, String name, Class type, Boolean nullable) {
+        this.index = index;
         this.name = name;
         this.type = type;
         this.nullable = nullable;

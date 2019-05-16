@@ -1,70 +1,71 @@
 package db;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import static java.util.Map.entry;
 
 public class Database {
 
+    public static final String TIMESTAMP = "timestamp";
+    public static final String USER_ID = "userId";
+    public static final String MOVIE_ID = "movieId";
+    public static final String RATING = "rating";
+    public static final String TITLE = "title";
+    public static final String GENRES = "genres";
+    public static final String IMDB_ID = "imdbId";
+    public static final String TMDB_ID = "tmdbId";
+    public static final String TAG = "tag";
+
     private final String path;
+
+    private Map<String, Table> schema;
 
     public Database(String path) {
         this.path = path;
-        buildSchema();
+        this.schema = buildSchema();
     }
 
     public String getPath() {
         return path;
     }
 
-    private void buildSchema() {
+    public Map<String, Table> getSchema() {
+        return schema;
+    }
 
-        Field field = new Field(1, "userId", Integer.TYPE, false);
-        Field field2 = new Field(1, "movieId", Integer.TYPE, false);
-        Field field3 = new Field(1, "rating", Float.TYPE, false);
-        Field field4 = new Field(1, "timestamp", Integer.TYPE, false);
+    private Map<String, Table> buildSchema() {
+
         Map<String, Field> ratingsFields = Map.ofEntries(
-            entry("userId", field),
-            entry("movieId", field2),
-            entry("rating", field3),
-            entry("timestamp", field4)
+            entry(USER_ID, new Field(1, USER_ID, Integer.TYPE, false)),
+            entry(MOVIE_ID, new Field(2, MOVIE_ID, Integer.TYPE, false)),
+            entry(RATING, new Field(3, RATING, Double.TYPE, false)),
+            entry(TIMESTAMP, new Field(4, TIMESTAMP, Integer.TYPE, false))
         );
         Table ratings = new Table("ratings", 1, ratingsFields);
 
-        Field field5 = new Field(2, "movieId", Integer.TYPE, false);
-        Field field6 = new Field(2, "title", String.class, false);
-        Field field7 = new Field(2, "genres", String.class, false);
         Map<String, Field> moviesFields = Map.ofEntries(
-            entry("movieId", field5),
-            entry("title", field6),
-            entry("genres", field7)
+            entry(MOVIE_ID, new Field(1, MOVIE_ID, Integer.TYPE, false)),
+            entry(TITLE, new Field(2, TITLE, String.class, false)),
+            entry(GENRES, new Field(3, GENRES, String.class, false))
         );
-        Table movies = new Table("movies", 1, moviesFields);
+        Table movies = new Table("movies", 2, moviesFields);
 
-        Field field8 = new Field(3, "movieId", Integer.TYPE, false);
-        Field field9 = new Field(3, "imdbId", Integer.TYPE, false);
-        Field field10 = new Field(3, "tmdbId", Integer.TYPE, false);
         Map<String, Field> linksFields = Map.ofEntries(
-            entry("movieId", field8),
-            entry("imbdId", field9),
-            entry("tmdbId", field10)
+            entry(MOVIE_ID, new Field(1, MOVIE_ID, Integer.TYPE, false)),
+            entry(IMDB_ID, new Field(2, IMDB_ID, Integer.TYPE, false)),
+            entry(TMDB_ID, new Field(3, TMDB_ID, Integer.TYPE, false))
         );
-        Table links = new Table("links", 1, linksFields);
+        Table links = new Table("links", 3, linksFields);
 
-        Field field11 = new Field(4, "userId", Integer.TYPE, false);
-        Field field12 = new Field(4, "movieId", Integer.TYPE, false);
-        Field field13 = new Field(4, "tag", String.class, false);
-        Field field14 = new Field(4, "timestamp", Integer.TYPE, false);
         Map<String, Field> tagsFields = Map.ofEntries(
-            entry("userId", field11),
-            entry("movieId", field12),
-            entry("tag", field13),
-            entry("timestamp", field14)
+            entry(USER_ID, new Field(1, USER_ID, Integer.TYPE, false)),
+            entry(MOVIE_ID, new Field(2, MOVIE_ID, Integer.TYPE, false)),
+            entry(TAG, new Field(3, TAG, String.class, false)),
+            entry(TIMESTAMP, new Field(4, TIMESTAMP, Integer.TYPE, false))
         );
-        Table tags = new Table("tags", 1, tagsFields);
+        Table tags = new Table("tags", 4, tagsFields);
 
-        Map<String, Table> schema = Map.ofEntries(
+        return Map.ofEntries(
             entry("ratings", ratings),
             entry("movies", movies),
             entry("links", links),

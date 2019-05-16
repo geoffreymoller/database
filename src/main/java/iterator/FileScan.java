@@ -1,6 +1,7 @@
 package iterator;
 
 import db.Database;
+import entity.Tuple;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -8,30 +9,31 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.InvocationTargetException;
 
-public class FileScan<T> implements Iterator {
+public class FileScan implements Iterator {
 
-    private Class<T> clazz;
+    private final String tableName;
+    private final Database db;
     private BufferedReader bufferedReader;
     private String line;
     private int i = 0;
 
-    public FileScan(Class<T> klass, Database db) {
-        this.clazz = klass;
+    public FileScan(String tableName, Database db) {
+        this.db = db;
+        this.tableName = tableName;
         InputStream inputstream;
         try {
             inputstream = new FileInputStream(db.getPath() +
-                clazz.getSimpleName().toLowerCase() +
-                "s.csv");
+                tableName +
+                ".csv");
             bufferedReader = new BufferedReader(new InputStreamReader(inputstream));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    public T next() {
-        T entity = null;
+    public Tuple next() {
+        Tuple entity;
         try {
             if (i == 0) {
                 line = bufferedReader.readLine();
@@ -46,16 +48,7 @@ public class FileScan<T> implements Iterator {
             return null;
         }
 
-        try {
-            Class[] cArg = new Class[1];
-            cArg[0] = String.class;
-            entity = (T) clazz.getDeclaredConstructor(cArg).newInstance(line);
-        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-            return null;
-        }
+        entity = new Tuple(db, tableName, line);
         i += 1;
         return entity;
     }

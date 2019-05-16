@@ -1,13 +1,18 @@
 package iterator;
 
 import db.Database;
-import entity.Link;
+import entity.Tuple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Field;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static db.Database.IMDB_ID;
+import static db.Database.MOVIE_ID;
+import static db.Database.RATING;
+import static db.Database.TIMESTAMP;
+import static db.Database.TITLE;
+import static db.Database.TMDB_ID;
+import static db.Database.USER_ID;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class FileScanTest {
 
@@ -19,29 +24,50 @@ class FileScanTest {
     }
 
     @Test
-    void next() {
-        FileScan<Link> fs = new FileScan<>(Link.class, db);
+    void testLinks() {
+        FileScan fs = new FileScan("links", db);
+        Tuple t = fs.next();
 
-        Link l = fs.next();
+        assertEquals(1, t.get(MOVIE_ID));
+        assertEquals(114709, t.get(IMDB_ID));
+        assertEquals(862, t.get(TMDB_ID));
 
-        Class<?> clazz = l.getClass();
-        for(Field field : clazz.getDeclaredFields()) {
-            //you can also use .toGenericString() instead of .getName(). This will
-            //give you the type information as well.
-            System.out.println(field.getName());
-            System.out.println(field.toGenericString());
-            System.out.println(field.getAnnotatedType());
-            System.out.println("");
-        }
+        t = fs.next();
+        assertEquals(2, t.get(MOVIE_ID));
+        assertEquals(113497, t.get(IMDB_ID));
+        assertEquals(8844, t.get(TMDB_ID));
+    }
 
-        assertEquals(1, l.getMovieId());
-        assertEquals(114709, l.getImdbId());
-        assertEquals(862, l.getTmdbId());
+    @Test
+    void testRatings() {
+        FileScan fs = new FileScan("ratings", db);
+        Tuple t = fs.next();
 
-        l = fs.next();
-        assertEquals(2, l.getMovieId());
-        assertEquals(113497, l.getImdbId());
-        assertEquals(8844, l.getTmdbId());
+        assertEquals(1, t.get(USER_ID));
+        assertEquals(2, t.get(MOVIE_ID));
+        assertEquals(3.5, t.get(RATING));
+        assertEquals(1112486027, t.get(TIMESTAMP));
+
+        t = fs.next();
+        assertEquals(1, t.get(USER_ID));
+        assertEquals(29, t.get(MOVIE_ID));
+        assertEquals(3.5, t.get(RATING));
+        assertEquals(1112484676, t.get(TIMESTAMP));
+    }
+
+    @Test
+    void testMovies() {
+        FileScan fs = new FileScan("movies", db);
+        Tuple t = fs.next();
+
+        assertEquals(1, t.get(MOVIE_ID));
+        assertEquals("Toy Story (1995)", t.get(TITLE));
+        assertEquals("Adventure|Animation|Children|Comedy|Fantasy", t.get("genres"));
+
+        t = fs.next();
+        assertEquals(2, t.get(MOVIE_ID));
+        assertEquals("Jumanji (1995)", t.get(TITLE));
+        assertEquals("Adventure|Children|Fantasy", t.get("genres"));
     }
 
 }
