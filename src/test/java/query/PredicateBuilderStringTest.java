@@ -1,6 +1,9 @@
 package query;
 
+import db.Database;
 import entity.Movie;
+import entity.Tuple;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.function.Predicate;
@@ -9,60 +12,67 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PredicateBuilderStringTest {
 
+    private Database db;
+
+    @BeforeEach
+    void setUp() {
+        db = new Database("/Users/geoffreymoller/Code/database/src/test/resources/next/");
+    }
+
     @Test
     void testStringEqualityTrue() {
-        Movie m = new Movie("1,Fandango,Comedy");
-        Predicate<Movie> p = new PredicateBuilder<Movie>().build(m, "title = Fandango");
-        assertTrue(p.test(m));
+        Tuple t = new Tuple(db, "movies", "1,Fandango,Comedy");
+        Predicate<Tuple> p = new PredicateBuilder().build(t, "title = Fandango");
+        assertTrue(p.test(t));
     }
 
     @Test
     void testStringEqualityFalse() {
-        Movie m = new Movie("1,Fandango,Comedy");
-        Predicate<Movie> p = new PredicateBuilder<Movie>().build(m, "title = Stripes");
-        assertFalse(p.test(m));
+        Tuple t = new Tuple(db, "movies", "1,Fandango,Comedy");
+        Predicate<Tuple> p = new PredicateBuilder().build(t, "title = Stripes");
+        assertFalse(p.test(t));
     }
 
     @Test
     void testStringInequalityTrue() {
-        Movie m = new Movie("1,Fandanga,Comedy");
-        Predicate<Movie> p = new PredicateBuilder<Movie>().build(m, "title != Fandango");
-        assertTrue(p.test(m));
+        Tuple t = new Tuple(db, "movies", "1,Fandanga,Comedy");
+        Predicate<Tuple> p = new PredicateBuilder().build(t, "title != Fandango");
+        assertTrue(p.test(t));
     }
 
     @Test
     void testStringInequalityFalse() {
-        Movie m = new Movie("1,Fandango,Comedy");
-        Predicate<Movie> p = new PredicateBuilder<Movie>().build(m, "title != Fandango");
-        assertFalse(p.test(m));
+        Tuple t = new Tuple(db, "movies", "1,Fandango,Comedy");
+        Predicate<Tuple> p = new PredicateBuilder().build(t, "title != Fandango");
+        assertFalse(p.test(t));
     }
 
     @Test
     void testStringLessThanTrue() {
-        Movie m = new Movie("1,Fandango,Comedy");
-        Predicate<Movie> p = new PredicateBuilder<Movie>().build(m, "title < Fandangy");
-        assertTrue(p.test(m));
+        Tuple t = new Tuple(db, "movies", "1,Fandango,Comedy");
+        Predicate<Tuple> p = new PredicateBuilder().build(t, "title < Fandangy");
+        assertTrue(p.test(t));
     }
 
     @Test
     void testStringLessThanFalse() {
-        Movie m = new Movie("1,Fandango,Comedy");
-        Predicate<Movie> p = new PredicateBuilder<Movie>().build(m, "title < Fandanga");
-        assertFalse(p.test(m));
+        Tuple t = new Tuple(db, "movies", "1,Fandango,Comedy");
+        Predicate<Tuple> p = new PredicateBuilder().build(t, "title < Fandanga");
+        assertFalse(p.test(t));
     }
 
     @Test
     void testStringGreaterThanTrue() {
-        Movie m = new Movie("1,Fandango,Comedy");
-        Predicate<Movie> p = new PredicateBuilder<Movie>().build(m, "title > Fandanga");
-        assertTrue(p.test(m));
+        Tuple t = new Tuple(db, "movies", "1,Fandango,Comedy");
+        Predicate<Tuple> p = new PredicateBuilder().build(t, "title > Fandanga");
+        assertTrue(p.test(t));
     }
 
     @Test
     void testStringGreaterThanFalse() {
-        Movie m = new Movie("1,Fandango,Comedy");
-        Predicate<Movie> p = new PredicateBuilder<Movie>().build(m, "title > Fandangy");
-        assertFalse(p.test(m));
+        Tuple t = new Tuple(db, "movies", "1,Fandango,Comedy");
+        Predicate<Tuple> p = new PredicateBuilder().build(t, "title > Fandangy");
+        assertFalse(p.test(t));
     }
 
 }

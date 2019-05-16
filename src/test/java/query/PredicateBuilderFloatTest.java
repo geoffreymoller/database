@@ -1,67 +1,77 @@
 package query;
 
-import entity.Rating;
+import db.Database;
+import entity.Tuple;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.function.Predicate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PredicateBuilderFloatTest {
 
+    private Database db;
+
+    @BeforeEach
+    void setUp() {
+        db = new Database("/Users/geoffreymoller/Code/database/src/test/resources/next/");
+    }
+
     @Test
     void testFloatEqualityTrue() {
-        Rating r = new Rating("1,2,3.5,1112486027");
-        Predicate<Rating> p = new PredicateBuilder<Rating>().build(r, "rating = 3.5");
-        assertTrue(p.test(r));
+        Tuple t = new Tuple(db, "ratings", "1,2,3.5,1112486027");
+        Predicate<Tuple> p = new PredicateBuilder().build(t, "rating = 3.5");
+        assertTrue(p.test(t));
     }
 
     @Test
     void testFloatEqualityFalse() {
-        Rating r = new Rating("1,2,3.5,1112486027");
-        Predicate<Rating> p = new PredicateBuilder<Rating>().build(r, "rating = 3.4");
-        assertFalse(p.test(r));
+        Tuple t = new Tuple(db, "ratings", "1,2,3.5,1112486027");
+        Predicate<Tuple> p = new PredicateBuilder().build(t, "rating = 3.4");
+        assertFalse(p.test(t));
     }
 
     @Test
     void testFloatInequalityTrue() {
-        Rating r = new Rating("1,2,3.5,1112486027");
-        Predicate<Rating> p = new PredicateBuilder<Rating>().build(r, "rating != 3.4");
-        assertTrue(p.test(r));
+        Tuple t = new Tuple(db, "ratings", "1,2,3.5,1112486027");
+        Predicate<Tuple> p = new PredicateBuilder().build(t, "rating != 3.4");
+        assertTrue(p.test(t));
     }
 
     @Test
     void testFloatInequalityFalse() {
-        Rating r = new Rating("1,2,3.5,1112486027");
-        Predicate<Rating> p = new PredicateBuilder<Rating>().build(r, "rating != 3.5");
-        assertFalse(p.test(r));
+        Tuple t = new Tuple(db, "ratings", "1,2,3.5,1112486027");
+        Predicate<Tuple> p = new PredicateBuilder().build(t, "rating != 3.5");
+        assertFalse(p.test(t));
     }
 
     @Test
     void testFloatLessThanTrue() {
-        Rating r = new Rating("1,2,3.5,1112486027");
-        Predicate<Rating> p = new PredicateBuilder<Rating>().build(r, "rating < 3.6");
-        assertTrue(p.test(r));
+        Tuple t = new Tuple(db, "ratings", "1,2,3.5,1112486027");
+        Predicate<Tuple> p = new PredicateBuilder().build(t, "rating < 3.6");
+        assertTrue(p.test(t));
     }
 
     @Test
     void testFloatLessThanFalse() {
-        Rating r = new Rating("1,2,3.5,1112486027");
-        Predicate<Rating> p = new PredicateBuilder<Rating>().build(r, "rating < 3.5");
-        assertFalse(p.test(r));
+        Tuple t = new Tuple(db, "ratings", "1,2,3.5,1112486027");
+        Predicate<Tuple> p = new PredicateBuilder().build(t, "rating < 3.5");
+        assertFalse(p.test(t));
     }
 
     @Test
     void testFloatGreaterThanTrue() {
-        Rating r = new Rating("1,2,3.5,1112486027");
-        Predicate<Rating> p = new PredicateBuilder<Rating>().build(r, "rating > 3.4");
-        assertTrue(p.test(r));
+        Tuple t = new Tuple(db, "ratings", "1,2,3.5,1112486027");
+        Predicate<Tuple> p = new PredicateBuilder().build(t, "rating > 3.4");
+        assertTrue(p.test(t));
     }
 
     @Test
     void testFloatGreaterThanFalse() {
-        Rating r = new Rating("1,2,3.5,1112486027");
-        Predicate<Rating> p = new PredicateBuilder<Rating>().build(r, "rating > 3.5");
-        assertFalse(p.test(r));
+        Tuple t = new Tuple(db, "ratings", "1,2,3.5,1112486027");
+        Predicate<Tuple> p = new PredicateBuilder().build(t, "rating > 3.5");
+        assertFalse(p.test(t));
     }
 }

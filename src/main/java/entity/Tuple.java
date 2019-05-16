@@ -16,6 +16,10 @@ public class Tuple {
         return tableName;
     }
 
+    public Database getDb() {
+        return db;
+    }
+
     public Tuple(Database db, String tableName, String data) {
         this.db = db;
         this.tableName = tableName;
