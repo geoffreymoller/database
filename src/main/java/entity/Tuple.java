@@ -42,4 +42,10 @@ public class Tuple {
             throw new UnsupportedOperationException();
         }
     }
+
+//    public Class getType(String fieldName) {
+//        Table table = db.getSchema().get(tableName);
+//        Field field = table.getFields().get(fieldName);
+//        return field.getType();
+//    }
 }

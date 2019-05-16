@@ -45,13 +45,13 @@ class FileScanTest {
 
         assertEquals(1, t.get(USER_ID));
         assertEquals(2, t.get(MOVIE_ID));
-        assertEquals(3.5, t.get(RATING));
+        assertEquals(1d, t.get(RATING));
         assertEquals(1112486027, t.get(TIMESTAMP));
 
         t = fs.next();
         assertEquals(1, t.get(USER_ID));
         assertEquals(29, t.get(MOVIE_ID));
-        assertEquals(3.5, t.get(RATING));
+        assertEquals(2d, t.get(RATING));
         assertEquals(1112484676, t.get(TIMESTAMP));
     }
 

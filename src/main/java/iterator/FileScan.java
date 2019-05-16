@@ -43,8 +43,8 @@ public class FileScan implements Iterator {
             e.printStackTrace();
         }
 
-        //TODO - null or throw?
-        if(line.equals("")) {
+        //TODO - this needs betterment; (null, throw, etc)?
+        if(line == null || line.equals("")) {
             return null;
         }
 
