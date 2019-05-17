@@ -1,17 +1,12 @@
 package iterator;
 
 import db.Database;
-import entity.Rating;
-import entity.Tuple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.InvocationTargetException;
-
 import static db.Database.RATING;
 import static db.Database.RATINGS;
-import static db.Database.USER_ID;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AverageTest {
 

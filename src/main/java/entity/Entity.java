@@ -1,7 +1,7 @@
 package entity;
 
 public interface Entity {
-    public String getName();
+    String getName();
 
     //https://www.programcreek.com/java-api-examples/?api=com.fasterxml.jackson.dataformat.csv.CsvMapper
 }

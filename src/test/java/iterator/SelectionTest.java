@@ -1,7 +1,6 @@
 package iterator;
 
 import db.Database;
-import entity.Link;
 import entity.Tuple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
