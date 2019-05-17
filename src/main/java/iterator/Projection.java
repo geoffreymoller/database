@@ -1,27 +1,26 @@
 package iterator;
 
-import db.Database;
 import entity.Tuple;
+
+import java.util.Arrays;
 
 public class Projection implements Iterator {
 
-    private final String columns;
+    private final String[] columns;
     private final Selection s;
-    private final Database db;
     private FileScan fileScan;
 
-    public Projection(String tableName, String columns, Selection s, Database db) {
-        this.columns = columns;
+    public Projection(Selection s, String columns) {
+        this.columns = columns.split(",");
         this.s = s;
-        this.db = db;
     }
 
     public Tuple next() {
         Tuple next = s.next();
-        while(next != null){
-            Tuple projected = new Tuple(db, s.getTableName(), columns);
-            next = s.next();
-        }
+//        Arrays.stream(columns).map(c -> {
+
+//        })
+////        Tuple projected = new Tuple(s.getDb(), s.getTableName(), columns);
         return next;
     }
 

@@ -10,13 +10,20 @@ public class Selection implements Iterator {
     private Predicate<Tuple> predicate;
     private FileScan fileScan;
     private String tableName;
+    private Database db;
 
     public String getTableName() {
         return tableName;
     }
 
+    public Database getDb() {
+
+        return db;
+    }
+
     public Selection(String tableName, Predicate<Tuple> p, Database db) {
         this.tableName = tableName;
+        this.db = db;
         this.fileScan = new FileScan(tableName, db);
         this.predicate = p;
     }
