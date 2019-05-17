@@ -12,8 +12,9 @@ import java.util.Map;
 public class Tuple {
     private final String tableName;
     private final Database db;
-    private final LinkedHashMap<String, Field> attributeFields;
+    private final Map<String, Field> fields;
     private ArrayList<String> attributes;
+    private final LinkedHashMap<String, Field> attributeFields;
 
     public String getTableName() {
         return tableName;
@@ -34,9 +35,10 @@ public class Tuple {
     public Tuple(Database db, String tableName, String data) {
         this.db = db;
         this.tableName = tableName;
-        attributes = Lists.newArrayList(data.split(","));
-        attributeFields = new LinkedHashMap<>();
-        Map<String, Field> fields = db.getSchema().get(tableName).getFields();
+        this.attributes = Lists.newArrayList(data.split(","));
+        this.attributeFields = new LinkedHashMap<>();
+        this.fields = db.getSchema().get(tableName).getFields();
+
         ArrayList<String> keys = new ArrayList<>(fields.keySet());
         int i = 0;
         for (String attribute : attributes) {
@@ -46,8 +48,7 @@ public class Tuple {
     }
 
     public Object get(String fieldName) {
-        Table table = db.getSchema().get(tableName);
-        Field field = table.getFields().get(fieldName);
+        Field field = fields.get(fieldName);
         String s = attributes.get(field.getIndex()-1);
         if (field.getType() == Integer.TYPE) {
             return Integer.valueOf(s);

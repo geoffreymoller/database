@@ -10,7 +10,7 @@ public class Projection implements Iterator {
     private final Database db;
     private FileScan fileScan;
 
-    public Projection(String columns, Selection s, Database db) {
+    public Projection(String tableName, String columns, Selection s, Database db) {
         this.columns = columns;
         this.s = s;
         this.db = db;
@@ -19,6 +19,7 @@ public class Projection implements Iterator {
     public Tuple next() {
         Tuple next = s.next();
         while(next != null){
+            Tuple projected = new Tuple(db, s.getTableName(), columns);
             next = s.next();
         }
         return next;
