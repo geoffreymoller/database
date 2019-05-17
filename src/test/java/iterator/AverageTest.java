@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.InvocationTargetException;
 
+import static db.Database.RATING;
+import static db.Database.RATINGS;
 import static db.Database.USER_ID;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,7 +24,7 @@ class AverageTest {
 
     @Test
     void next() {
-        Average avg = new Average("ratings", i -> true, "rating", db);
+        Average avg = new Average(RATINGS, i -> true, RATING, db);
         assertEquals(2d, avg.next());
     }
 
