@@ -21,6 +21,10 @@ public class Tuple {
         return db;
     }
 
+    public Map<String, FieldMap> getAttributeMap() {
+        return attributeMap;
+    }
+
     public Tuple(Database db, String tableName, Map<String, FieldMap> map) {
         this.db = db;
         this.tableName = tableName;
@@ -65,7 +69,7 @@ public class Tuple {
         }
     }
 
-    private class FieldMap{
+    public class FieldMap{
         private final String attribute;
         private final Field field;
 
