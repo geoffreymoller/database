@@ -24,23 +24,29 @@ class ProjectionTest {
 
     @Test
     void next() {
+
+        String movieIdKey = "movieId-links";
+        String imdbIdKey = "imdbId-links";
+
         Predicate<Tuple> predicate = item -> true;
         Selection selection = new Selection(LINKS, predicate, db);
-        Projection p = new Projection(selection, "movieId,imdbId");
+        Projection p = new Projection(selection, movieIdKey+","+imdbIdKey);
         Tuple t = p.next();
         Map<String, Tuple.FieldMap> attributes = t.getAttributeMap();
 
         assertEquals(2, attributes.keySet().size());
 
-        assertEquals("1", attributes.get(MOVIE_ID).getAttribute());
-        assertEquals(MOVIE_ID, attributes.get(MOVIE_ID).getField().getName());
-        assertEquals(Integer.TYPE, attributes.get(MOVIE_ID).getField().getType());
-        assertEquals(1, t.get(MOVIE_ID));
+        Tuple.FieldMap fieldMap = attributes.get(movieIdKey);
+        assertEquals("1", fieldMap.getAttribute());
+        assertEquals(MOVIE_ID, fieldMap.getField().getName());
+        assertEquals(Integer.TYPE, fieldMap.getField().getType());
+        assertEquals(1, t.get(MOVIE_ID, LINKS));
 
-        assertEquals("0114709", attributes.get(IMDB_ID).getAttribute());
-        assertEquals(IMDB_ID, attributes.get(IMDB_ID).getField().getName());
-        assertEquals(Integer.TYPE, attributes.get(IMDB_ID).getField().getType());
-        assertEquals(114709, t.get(IMDB_ID));
+        Tuple.FieldMap fieldMap1 = attributes.get(imdbIdKey);
+        assertEquals("0114709", fieldMap1.getAttribute());
+        assertEquals(IMDB_ID, fieldMap1.getField().getName());
+        assertEquals(Integer.TYPE, fieldMap1.getField().getType());
+        assertEquals(114709, t.get(IMDB_ID, LINKS));
     }
 
 }

@@ -1,13 +1,13 @@
 package db;
 
-public class Field {
-    private int index;
+public final class Field {
+    private final String tableName;
     private String name;
     private Class type;
     private Boolean nullable;
 
-    public int getIndex() {
-        return index;
+    public String getTableName() {
+        return tableName;
     }
 
     public String getName() {
@@ -18,14 +18,20 @@ public class Field {
         return type;
     }
 
-    public Boolean getNullable() {
-        return nullable;
-    }
-
-    public Field(int index, String name, Class type, Boolean nullable) {
-        this.index = index;
-        this.name = name;
+    public Field(String tableName, String fieldName, Class type, Boolean nullable) {
+        this.tableName = tableName;
+        this.name = fieldName;
         this.type = type;
         this.nullable = nullable;
+    }
+
+    @Override
+    public String toString() {
+        return "Field{" +
+            "tableName='" + tableName + '\'' +
+            ", name='" + name + '\'' +
+            ", type=" + type +
+            ", nullable=" + nullable +
+            '}';
     }
 }

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class Tuple {
+public final class Tuple {
     private final Database db;
     private final String tableName;
     private final Map<String, FieldMap> attributeMap;
@@ -25,20 +25,22 @@ public class Tuple {
         return attributeMap;
     }
 
+    //projection, join
     public Tuple(Database db, String tableName, Map<String, FieldMap> map) {
         this.db = db;
-        this.tableName = tableName;
         this.attributeMap = map;
+        this.tableName = tableName;
     }
 
+    //db row
     public Tuple(Database db, String tableName, String data) {
-        Map<String, FieldMap> map = getFieldMap(db, tableName, data);
+        Map<String, FieldMap> map = makeFieldMap(db, tableName, data);
         this.db = db;
-        this.tableName = tableName;
         this.attributeMap = map;
+        this.tableName = tableName;
     }
 
-    private Map<String, FieldMap> getFieldMap(Database db, String tableName, String data) {
+    private Map<String, FieldMap> makeFieldMap(Database db, String tableName, String data) {
         ArrayList<String> attributes = Lists.newArrayList(data.split(","));
         Map<String, Field> fields = db.getSchema().get(tableName).getFields();
         ArrayList<String> keys = new ArrayList<>(fields.keySet());
@@ -47,29 +49,30 @@ public class Tuple {
         for (String attribute : attributes) {
             Field field = fields.get(keys.get(i));
             FieldMap fm = new FieldMap(attribute, field);
-            map.put(field.getName(), fm);
+            map.put(field.getName() + "-" + field.getTableName(), fm);
             i++;
         }
         return map;
     }
 
-    public Object get(String fieldName) {
-        Field field = attributeMap.get(fieldName).getField();
-        String s = attributeMap.get(fieldName).getAttribute();
-        if (field.getType() == Integer.TYPE) {
+    public Object get(String fieldName, String tableName) {
+        FieldMap f = attributeMap.get(fieldName + "-" + tableName);
+        Class fieldType = f.getField().getType();
+        String s = f.getAttribute();
+        if (fieldType == Integer.TYPE) {
             return Integer.valueOf(s);
-        } else if (field.getType() == Double.TYPE) {
+        } else if (fieldType == Double.TYPE) {
             return Double.valueOf(s);
-        } else if (field.getType() == Float.TYPE) {
+        } else if (fieldType == Float.TYPE) {
             return Float.valueOf(s);
-        } else if (field.getType() == String.class) {
+        } else if (fieldType == String.class) {
             return s;
         } else {
             throw new UnsupportedOperationException();
         }
     }
 
-    public class FieldMap{
+    public final class FieldMap {
         private final String attribute;
         private final Field field;
 
@@ -85,7 +88,23 @@ public class Tuple {
             this.attribute = attribute;
             this.field = field;
         }
+
+        @Override
+        public String toString() {
+            return "FieldMap{" +
+                "attribute='" + attribute + '\'' +
+                ", field=" + field +
+                '}';
+        }
     }
 
+    @Override
+    public String toString() {
+        return "Tuple{" +
+            "db=" + db +
+            ", tableName='" + tableName + '\'' +
+            ", attributeMap=" + attributeMap +
+            '}';
+    }
 }
 

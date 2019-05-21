@@ -23,22 +23,22 @@ class SelectionTest {
 
     @Test
     void testQuery() {
-        Predicate<Tuple> p = t -> (Integer) t.get(MOVIE_ID) == 2;
+        Predicate<Tuple> p = t -> (Integer) t.get(MOVIE_ID, t.getTableName()) == 2;
         Selection selection = new Selection(LINKS, p, db);
         Tuple t = selection.next();
-        assertEquals(2, t.get(MOVIE_ID));
+        assertEquals(2, t.get(MOVIE_ID, t.getTableName()));
     }
 
     @Test
     void testNextExists() {
-        Predicate<Tuple> p = t -> (Integer) t.get(MOVIE_ID) == 2;
+        Predicate<Tuple> p = t -> (Integer) t.get(MOVIE_ID, t.getTableName()) == 2;
         Selection selection = new Selection(LINKS, p, db);
-        assertEquals(2, selection.next().get(MOVIE_ID));
+        assertEquals(2, selection.next().get(MOVIE_ID, selection.getTableName()));
     }
 
     @Test
     void testNextNotExists() {
-        Predicate<Tuple> p = t -> (Integer) t.get(MOVIE_ID) == Integer.MAX_VALUE;
+        Predicate<Tuple> p = t -> (Integer) t.get(MOVIE_ID, t.getTableName()) == Integer.MAX_VALUE;
         Selection selection = new Selection(LINKS, p, db);
         assertNull(selection.next());
     }

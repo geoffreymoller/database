@@ -12,12 +12,19 @@ public class Selection implements Iterator {
     private String tableName;
     private Database db;
 
+    public Predicate<Tuple> getPredicate() {
+        return predicate;
+    }
+
+    public FileScan getFileScan() {
+        return fileScan;
+    }
+
     public String getTableName() {
         return tableName;
     }
 
     public Database getDb() {
-
         return db;
     }
 

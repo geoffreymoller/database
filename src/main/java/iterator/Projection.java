@@ -19,11 +19,12 @@ public class Projection implements Iterator {
 
     public Tuple next() {
         Tuple next = s.next();
-        Map<String, Tuple.FieldMap> dest = new LinkedHashMap<>();
         Map<String, Tuple.FieldMap> map = next.getAttributeMap();
-        map.keySet().forEach(e -> {
-            if(columns.indexOf(e) > -1){
-                dest.put(e, map.get(e));
+        Map<String, Tuple.FieldMap> dest = new LinkedHashMap<>();
+        map.keySet().forEach(fieldName -> {
+            Tuple.FieldMap field = map.get(fieldName);
+            if (columns.indexOf(fieldName) > -1) {
+                dest.put(fieldName, field);
             }
         });
         return new Tuple(next.getDb(), next.getTableName(), dest);
