@@ -12,6 +12,8 @@ import static db.Database.LINKS;
 import static db.Database.MOVIES;
 import static db.Database.MOVIE_ID;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 class JoinTest {
 
     Database db;
@@ -32,16 +34,12 @@ class JoinTest {
 
         Join j = new Join(selectionLinks, selectionMovies, joinPredicate, db);
         Tuple t = j.next();
-
-        System.out.println(t);
-//        t = j.next();
-//        System.out.println(t);
-//        t = j.next();
-//        System.out.println(t);
-//        t = j.next();
-//        System.out.println(t);
-//        t = j.next();
-//        System.out.println(t);
+        int i = 0;
+        while (t != null) {
+            i++;
+            t = j.next();
+        }
+        assertEquals(9, i);
     }
 
 }

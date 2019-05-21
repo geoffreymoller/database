@@ -34,6 +34,10 @@ public class Join implements Iterator {
             Tuple t1 = s1.next();
             while (t1 != null) {
                 Tuple t2 = s2.next();
+                if(t2 == null){
+                   s2 = new Selection(s2.getTableName(), s2.getPredicate(), s2.getDb());
+                   continue;
+                }
                 while (t2 != null) {
                     if (f.apply(t1, t2)) {
                         LinkedHashMap<String, Tuple.FieldMap> sum = new LinkedHashMap<>();
