@@ -28,6 +28,14 @@ public class Join implements Iterator {
         this.iterator = generator.iterator();
     }
 
+    public Tuple next() {
+        if (iterator.hasNext()) {
+            return iterator.next();
+        } else {
+            return null;
+        }
+    }
+
     private class JoinGenerator extends Generator<Tuple> {
         @Override
         protected void run() throws InterruptedException {
@@ -49,14 +57,6 @@ public class Join implements Iterator {
                 }
                 t1 = s1.next();
             }
-        }
-    }
-
-    public Tuple next() {
-        if (iterator.hasNext()) {
-            return iterator.next();
-        } else {
-            return null;
         }
     }
 

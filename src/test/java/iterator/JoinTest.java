@@ -13,6 +13,7 @@ import static db.Database.MOVIES;
 import static db.Database.MOVIE_ID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class JoinTest {
 
@@ -40,6 +41,7 @@ class JoinTest {
             t = j.next();
         }
         assertEquals(9, i);
+        assertNull(j.next());
     }
 
 }
