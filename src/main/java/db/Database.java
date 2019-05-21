@@ -43,30 +43,30 @@ public class Database {
     private Map<String, Table> buildSchema() {
 
         LinkedHashMap<String, Field> ratingsFields = new LinkedHashMap<>();
-        ratingsFields.put(USER_ID, new Field(1, USER_ID, Integer.TYPE, false));
-        ratingsFields.put(MOVIE_ID, new Field(2, MOVIE_ID, Integer.TYPE, false));
-        ratingsFields.put(RATING, new Field(3, RATING, Double.TYPE, false));
-        ratingsFields.put(TIMESTAMP, new Field(4, TIMESTAMP, Integer.TYPE, false));
+        ratingsFields.put(USER_ID, new Field(RATINGS, USER_ID, Integer.TYPE, false));
+        ratingsFields.put(MOVIE_ID, new Field(RATINGS, MOVIE_ID, Integer.TYPE, false));
+        ratingsFields.put(RATING, new Field(RATINGS, RATING, Double.TYPE, false));
+        ratingsFields.put(TIMESTAMP, new Field(RATINGS, TIMESTAMP, Integer.TYPE, false));
 
         Table ratings = new Table(RATINGS, 1, ratingsFields);
 
         LinkedHashMap<String, Field> moviesFields = new LinkedHashMap<>();
-        moviesFields.put(MOVIE_ID, new Field(1, MOVIE_ID, Integer.TYPE, false));
-        moviesFields.put(TITLE, new Field(2, TITLE, String.class, false));
-        moviesFields.put(GENRES, new Field(3, GENRES, String.class, false));
+        moviesFields.put(MOVIE_ID, new Field(MOVIES, MOVIE_ID, Integer.TYPE, false));
+        moviesFields.put(TITLE, new Field(MOVIES, TITLE, String.class, false));
+        moviesFields.put(GENRES, new Field(MOVIES, GENRES, String.class, false));
         Table movies = new Table(MOVIES, 2, moviesFields);
 
         LinkedHashMap<String, Field> linksFields = new LinkedHashMap<>();
-        linksFields.put(MOVIE_ID, new Field(1, MOVIE_ID, Integer.TYPE, false));
-        linksFields.put(IMDB_ID, new Field(2, IMDB_ID, Integer.TYPE, false));
-        linksFields.put(TMDB_ID, new Field(3, TMDB_ID, Integer.TYPE, false));
+        linksFields.put(MOVIE_ID, new Field(LINKS, MOVIE_ID, Integer.TYPE, false));
+        linksFields.put(IMDB_ID, new Field(LINKS, IMDB_ID, Integer.TYPE, false));
+        linksFields.put(TMDB_ID, new Field(LINKS, TMDB_ID, Integer.TYPE, false));
         Table links = new Table(LINKS, 3, linksFields);
 
         LinkedHashMap<String, Field> tagsFields = new LinkedHashMap<>();
-        tagsFields.put(USER_ID, new Field(1, USER_ID, Integer.TYPE, false));
-        tagsFields.put(MOVIE_ID, new Field(2, MOVIE_ID, Integer.TYPE, false));
-        tagsFields.put(TAG, new Field(3, TAG, String.class, false));
-        tagsFields.put(TIMESTAMP, new Field(4, TIMESTAMP, Integer.TYPE, false));
+        tagsFields.put(USER_ID, new Field(TAGS, USER_ID, Integer.TYPE, false));
+        tagsFields.put(MOVIE_ID, new Field(TAGS, MOVIE_ID, Integer.TYPE, false));
+        tagsFields.put(TAG, new Field(TAGS, TAG, String.class, false));
+        tagsFields.put(TIMESTAMP, new Field(TAGS, TIMESTAMP, Integer.TYPE, false));
         Table tags = new Table(TAGS, 4, tagsFields);
 
         return Map.ofEntries(

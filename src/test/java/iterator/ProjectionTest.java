@@ -28,20 +28,19 @@ class ProjectionTest {
         Selection selection = new Selection(LINKS, predicate, db);
         Projection p = new Projection(selection, "movieId,imdbId");
         Tuple t = p.next();
-        Map<String, Map<String, Tuple.FieldMap>> attributes = t.getAttributeMap();
+        Map<String, Tuple.FieldMap> attributes = t.getAttributeMap();
 
-        assertEquals(1, attributes.keySet().size());
-        assertEquals(2, attributes.get(LINKS).size());
+        assertEquals(2, attributes.keySet().size());
 
-        assertEquals("1", attributes.get(LINKS).get(MOVIE_ID).getAttribute());
-        assertEquals(MOVIE_ID, attributes.get(LINKS).get(MOVIE_ID).getField().getName());
-        assertEquals(Integer.TYPE, attributes.get(LINKS).get(MOVIE_ID).getField().getType());
-        assertEquals(1, t.get(MOVIE_ID));
+        assertEquals("1", attributes.get(MOVIE_ID).getAttribute());
+        assertEquals(MOVIE_ID, attributes.get(MOVIE_ID).getField().getName());
+        assertEquals(Integer.TYPE, attributes.get(MOVIE_ID).getField().getType());
+        assertEquals(1, t.get(MOVIE_ID, LINKS));
 
-        assertEquals("0114709", attributes.get(LINKS).get(IMDB_ID).getAttribute());
-        assertEquals(IMDB_ID, attributes.get(LINKS).get(IMDB_ID).getField().getName());
-        assertEquals(Integer.TYPE, attributes.get(LINKS).get(IMDB_ID).getField().getType());
-        assertEquals(114709, t.get(IMDB_ID));
+        assertEquals("0114709", attributes.get(IMDB_ID).getAttribute());
+        assertEquals(IMDB_ID, attributes.get(IMDB_ID).getField().getName());
+        assertEquals(Integer.TYPE, attributes.get(IMDB_ID).getField().getType());
+        assertEquals(114709, t.get(IMDB_ID, LINKS));
     }
 
 }

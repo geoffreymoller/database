@@ -8,11 +8,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public final class Tuple {
     private final Database db;
     private final String tableName;
-    private final Map<String, Map<String, FieldMap>> attributeMap;
+    private final Map<String, FieldMap> attributeMap;
 
     public String getTableName() {
         return tableName;
@@ -22,44 +23,49 @@ public final class Tuple {
         return db;
     }
 
-    public Map<String, Map<String, FieldMap>> getAttributeMap() {
+    public Map<String, FieldMap> getAttributeMap() {
         return attributeMap;
     }
 
-    public Tuple(Database db, String tableName, Map<String, Map<String, FieldMap>> map) {
+    //projection
+    public Tuple(Database db, String tableName, Map<String, FieldMap> map) {
         this.db = db;
-        this.tableName = tableName;
         this.attributeMap = map;
+        this.tableName = tableName;
     }
 
+    //db row
     public Tuple(Database db, String tableName, String data) {
-        Map<String, Map<String, FieldMap>> map = getFieldMap(db, tableName, data);
+        Map<String, FieldMap> map = makeFieldMap(db, tableName, data);
         this.db = db;
-        this.tableName = tableName;
         this.attributeMap = map;
+        this.tableName = tableName;
     }
 
-    private Map<String, Map<String, FieldMap>> getFieldMap(Database db, String tableName, String data) {
+    private Map<String, FieldMap> makeFieldMap(Database db, String tableName, String data) {
         ArrayList<String> attributes = Lists.newArrayList(data.split(","));
         Map<String, Field> fields = db.getSchema().get(tableName).getFields();
         ArrayList<String> keys = new ArrayList<>(fields.keySet());
-        Map<String, Map<String, FieldMap>> map = new LinkedHashMap<>();
-        Map<String, FieldMap> fieldMap = new HashMap<String, FieldMap>();
+        Map<String, FieldMap> map = new LinkedHashMap<>();
         int i = 0;
         for (String attribute : attributes) {
             Field field = fields.get(keys.get(i));
             FieldMap fm = new FieldMap(attribute, field);
-            fieldMap.put(field.getName(), fm);
+            map.put(field.getName(), fm);
             i++;
         }
-        map.put(tableName, fieldMap);
         return map;
     }
 
-    public Object get(String fieldName) {
-        FieldMap fm = attributeMap.get(tableName).get(fieldName);
-        Class fieldType = fm.getField().getType();
-        String s = fm.getAttribute();
+    public Object get(String fieldName, String tableName) {
+        Map<String, FieldMap> map = attributeMap.entrySet().stream()
+            .filter(entry -> {
+                return entry.getValue().getField().getTableName().equals(tableName)
+                    && entry.getValue().getField().getName().equals(fieldName);
+            }).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        FieldMap f = map.get(fieldName);
+        Class fieldType = f.getField().getType();
+        String s = f.getAttribute();
         if (fieldType == Integer.TYPE) {
             return Integer.valueOf(s);
         } else if (fieldType == Double.TYPE) {
@@ -73,7 +79,7 @@ public final class Tuple {
         }
     }
 
-    public final class FieldMap{
+    public final class FieldMap {
         private final String attribute;
         private final Field field;
 

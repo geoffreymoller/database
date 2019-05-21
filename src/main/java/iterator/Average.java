@@ -12,8 +12,10 @@ public class Average implements Iterator {
     private Double total = 0d;
     private Double count = 0d;
     private String attribute;
+    private String tableName;
 
     public Average(String tableName, Predicate<Tuple> f, String attribute, Database db) {
+        this.tableName = tableName;
         Predicate<Tuple> p = t -> true;
         this.attribute = attribute;
         this.selection = new Selection(tableName, p, db);
@@ -24,7 +26,7 @@ public class Average implements Iterator {
         Tuple next = selection.next();
         while(next != null && predicate.test(next)){
             count++;
-            total += (Double) next.get(attribute);
+            total += (Double) next.get(attribute, tableName);
             next = selection.next();
         }
         return total/count;
