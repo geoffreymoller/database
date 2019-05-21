@@ -3,6 +3,7 @@ package iterator;
 import db.Database;
 import entity.Tuple;
 
+import java.util.LinkedHashMap;
 import java.util.function.BiFunction;
 
 public class Join implements Iterator {
@@ -25,29 +26,30 @@ public class Join implements Iterator {
         this.db = db;
         this.generator = new JoinGenerator();
         this.iterator = generator.iterator();
-   }
+    }
 
     private class JoinGenerator extends Generator<Tuple> {
         @Override
         protected void run() throws InterruptedException {
-            for(Tuple t1 = s1.next(); t1 != null;){
-                System.out.println(t1.getAttributeMap());
-                for(Tuple t2 = s2.next(); t2 != null;){
-                    if (f.apply(t1, t2)){
-//                    Map<String, Tuple.FieldMap> map1 = t1.getAttributeMap();
-//                    Map<String, Tuple.FieldMap> map2 = t2.getAttributeMap();
-//                    map2.putAll(map1);
-                      yield(t2);
+            Tuple t1 = s1.next();
+            while (t1 != null) {
+                Tuple t2 = s2.next();
+                while (t2 != null) {
+                    if (f.apply(t1, t2)) {
+                        LinkedHashMap<String, Tuple.FieldMap> sum = new LinkedHashMap<>();
+                        sum.putAll(t1.getAttributeMap());
+                        sum.putAll(t2.getAttributeMap());
+                        yield(new Tuple(db, t1.getTableName()+"-"+t2.getTableName(), sum));
                     }
+                    t2 = s2.next();
                 }
-
                 t1 = s1.next();
             }
         }
     }
 
     public Tuple next() {
-        if(iterator.hasNext()){
+        if (iterator.hasNext()) {
             return iterator.next();
         } else {
             return null;

@@ -5,10 +5,8 @@ import db.Database;
 import db.Field;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public final class Tuple {
     private final Database db;
@@ -27,7 +25,7 @@ public final class Tuple {
         return attributeMap;
     }
 
-    //projection
+    //projection, join
     public Tuple(Database db, String tableName, Map<String, FieldMap> map) {
         this.db = db;
         this.attributeMap = map;
@@ -51,19 +49,14 @@ public final class Tuple {
         for (String attribute : attributes) {
             Field field = fields.get(keys.get(i));
             FieldMap fm = new FieldMap(attribute, field);
-            map.put(field.getName(), fm);
+            map.put(field.getName() + "-" + field.getTableName(), fm);
             i++;
         }
         return map;
     }
 
     public Object get(String fieldName, String tableName) {
-        Map<String, FieldMap> map = attributeMap.entrySet().stream()
-            .filter(entry -> {
-                return entry.getValue().getField().getTableName().equals(tableName)
-                    && entry.getValue().getField().getName().equals(fieldName);
-            }).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-        FieldMap f = map.get(fieldName);
+        FieldMap f = attributeMap.get(fieldName + "-" + tableName);
         Class fieldType = f.getField().getType();
         String s = f.getAttribute();
         if (fieldType == Integer.TYPE) {
@@ -95,7 +88,23 @@ public final class Tuple {
             this.attribute = attribute;
             this.field = field;
         }
+
+        @Override
+        public String toString() {
+            return "FieldMap{" +
+                "attribute='" + attribute + '\'' +
+                ", field=" + field +
+                '}';
+        }
     }
 
+    @Override
+    public String toString() {
+        return "Tuple{" +
+            "db=" + db +
+            ", tableName='" + tableName + '\'' +
+            ", attributeMap=" + attributeMap +
+            '}';
+    }
 }
 

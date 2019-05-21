@@ -2,17 +2,12 @@ package db;
 
 public final class Field {
     private final String tableName;
-    private int index;
     private String name;
     private Class type;
     private Boolean nullable;
 
     public String getTableName() {
         return tableName;
-    }
-
-    public int getIndex() {
-        return index;
     }
 
     public String getName() {
@@ -28,5 +23,15 @@ public final class Field {
         this.name = fieldName;
         this.type = type;
         this.nullable = nullable;
+    }
+
+    @Override
+    public String toString() {
+        return "Field{" +
+            "tableName='" + tableName + '\'' +
+            ", name='" + name + '\'' +
+            ", type=" + type +
+            ", nullable=" + nullable +
+            '}';
     }
 }
