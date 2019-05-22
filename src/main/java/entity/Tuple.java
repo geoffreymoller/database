@@ -3,6 +3,7 @@ package entity;
 import com.google.common.collect.Lists;
 import db.Database;
 import db.Field;
+import db.FieldMap;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -69,32 +70,6 @@ public final class Tuple {
             return s;
         } else {
             throw new UnsupportedOperationException();
-        }
-    }
-
-    public final class FieldMap {
-        private final String attribute;
-        private final Field field;
-
-        public String getAttribute() {
-            return attribute;
-        }
-
-        public Field getField() {
-            return field;
-        }
-
-        FieldMap(String attribute, Field field) {
-            this.attribute = attribute;
-            this.field = field;
-        }
-
-        @Override
-        public String toString() {
-            return "FieldMap{" +
-                "attribute='" + attribute + '\'' +
-                ", field=" + field +
-                '}';
         }
     }
 

@@ -1,6 +1,7 @@
 package iterator;
 
 import db.Database;
+import entity.Tuple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,10 +21,9 @@ class AverageTest {
     @Test
     void next() {
         Average avg = new Average(RATINGS, i -> true, RATING, db);
-        assertEquals(2d, avg.next());
+        Tuple next = avg.next();
+        Object actual = next.get("average", "aggregate");
+        assertEquals(2d, actual);
     }
 
-    @Test
-    void close() {
-    }
 }

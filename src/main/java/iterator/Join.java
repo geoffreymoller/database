@@ -1,6 +1,7 @@
 package iterator;
 
 import db.Database;
+import db.FieldMap;
 import entity.Tuple;
 
 import java.util.LinkedHashMap;
@@ -47,7 +48,7 @@ public class Join implements Iterator {
                 }
                 while (t2 != null) {
                     if (f.apply(t1, t2)) {
-                        LinkedHashMap<String, Tuple.FieldMap> sum = new LinkedHashMap<>();
+                        LinkedHashMap<String, FieldMap> sum = new LinkedHashMap<>();
                         sum.putAll(t1.getAttributeMap());
                         sum.putAll(t2.getAttributeMap());
                         yield(new Tuple(db, t1.getTableName()+"-"+t2.getTableName(), sum));

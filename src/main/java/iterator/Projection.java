@@ -1,6 +1,7 @@
 package iterator;
 
 import com.google.common.collect.Lists;
+import db.FieldMap;
 import entity.Tuple;
 
 import java.util.ArrayList;
@@ -19,10 +20,10 @@ public class Projection implements Iterator {
 
     public Tuple next() {
         Tuple next = s.next();
-        Map<String, Tuple.FieldMap> map = next.getAttributeMap();
-        Map<String, Tuple.FieldMap> dest = new LinkedHashMap<>();
+        Map<String, FieldMap> map = next.getAttributeMap();
+        Map<String, FieldMap> dest = new LinkedHashMap<>();
         map.keySet().forEach(fieldName -> {
-            Tuple.FieldMap field = map.get(fieldName);
+            FieldMap field = map.get(fieldName);
             if (columns.indexOf(fieldName) > -1) {
                 dest.put(fieldName, field);
             }
