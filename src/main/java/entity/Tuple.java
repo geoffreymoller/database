@@ -50,14 +50,14 @@ public final class Tuple {
         for (String attribute : attributes) {
             Field field = fields.get(keys.get(i));
             FieldMap fm = new FieldMap(attribute, field);
-            map.put(field.getName() + "-" + field.getTableName(), fm);
+            map.put(field.getName(), fm);
             i++;
         }
         return map;
     }
 
-    public Object get(String fieldName, String tableName) {
-        FieldMap f = attributeMap.get(fieldName + "-" + tableName);
+    public Object get(String attribute) {
+        FieldMap f = attributeMap.get(attribute);
         Class fieldType = f.getField().getType();
         String s = f.getAttribute();
         if (fieldType == Integer.TYPE) {

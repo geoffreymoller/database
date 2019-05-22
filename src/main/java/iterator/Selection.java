@@ -8,42 +8,33 @@ import java.util.function.Predicate;
 public class Selection implements Iterator {
 
     private Predicate<Tuple> predicate;
-    private FileScan fileScan;
-    private String tableName;
     private Schema schema;
+    private Iterator child;
 
     public Predicate<Tuple> getPredicate() {
         return predicate;
-    }
-
-    public FileScan getFileScan() {
-        return fileScan;
-    }
-
-    public String getTableName() {
-        return tableName;
     }
 
     public Schema getSchema() {
         return schema;
     }
 
-    public Selection(String tableName, Predicate<Tuple> p, Schema schema) {
-        this.tableName = tableName;
+    public Selection(Predicate<Tuple> p, Iterator child, Schema schema) {
+        this.child = child;
         this.schema = schema;
         this.predicate = p;
         this.init();
     }
 
     public void init(){
-        this.fileScan = new FileScan(this);
+        this.child.init();
     }
 
     public Tuple next() {
-        Tuple next = fileScan.next();
+        Tuple next = this.child.next();
         //TODO - null or throw?
         while(next != null && !predicate.test(next)){
-            next = fileScan.next();
+            next = this.child.next();
         }
         return next;
     }

@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 class SelectionTest {
 
-    Schema schema;
+    private Schema schema;
 
     @BeforeEach
     void setUp() {
@@ -23,23 +23,26 @@ class SelectionTest {
 
     @Test
     void testQuery() {
-        Predicate<Tuple> p = t -> (Integer) t.get(MOVIE_ID, t.getTableName()) == 2;
-        Selection selection = new Selection(LINKS, p, schema);
+        FileScan fs = new FileScan(LINKS, schema);
+        Predicate<Tuple> p = t -> (Integer) t.get(MOVIE_ID) == 2;
+        Selection selection = new Selection(p, fs, schema);
         Tuple t = selection.next();
-        assertEquals(2, t.get(MOVIE_ID, t.getTableName()));
+        assertEquals(2, t.get(MOVIE_ID));
     }
 
     @Test
     void testNextExists() {
-        Predicate<Tuple> p = t -> (Integer) t.get(MOVIE_ID, t.getTableName()) == 2;
-        Selection selection = new Selection(LINKS, p, schema);
-        assertEquals(2, selection.next().get(MOVIE_ID, selection.getTableName()));
+        FileScan fs = new FileScan(LINKS, schema);
+        Predicate<Tuple> p = t -> (Integer) t.get(MOVIE_ID) == 2;
+        Selection selection = new Selection(p, fs, schema);
+        assertEquals(2, selection.next().get(MOVIE_ID));
     }
 
     @Test
     void testNextNotExists() {
-        Predicate<Tuple> p = t -> (Integer) t.get(MOVIE_ID, t.getTableName()) == Integer.MAX_VALUE;
-        Selection selection = new Selection(LINKS, p, schema);
+        FileScan fs = new FileScan(LINKS, schema);
+        Predicate<Tuple> p = t -> (Integer) t.get(MOVIE_ID) == Integer.MAX_VALUE;
+        Selection selection = new Selection(p, fs, schema);
         assertNull(selection.next());
     }
 
