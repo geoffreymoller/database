@@ -10,13 +10,14 @@ import java.util.Objects;
 public class InMemorySort implements Iterator {
 
     private final String attribute;
+    private Schema schema;
     private Iterator child;
     private ArrayList<Tuple> all;
-    private java.util.Iterator<Tuple> iterator;
 
     InMemorySort(String attribute, Iterator child, Schema schema) {
         this.child = child;
         this.attribute = attribute;
+        this.schema = schema;
         this.init();
     }
 

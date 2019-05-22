@@ -30,6 +30,7 @@ public class FileScan implements Iterator {
 
     //TODO - protobuf Java
     //TODO - import CSV tables to your encoding (which is the protobuf encoding)
+    //https://www.baeldung.com/google-protocol-buffer
     @Override
     public void init() {
         i = 0;
