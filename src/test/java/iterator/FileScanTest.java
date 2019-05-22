@@ -1,5 +1,6 @@
 package iterator;
 
+import db.DatabaseProtos;
 import db.Schema;
 import entity.Tuple;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,6 +23,24 @@ class FileScanTest {
     @BeforeEach
     void setUp() {
         schema = new Schema("/Users/geoffreymoller/Code/database/src/test/resources/next/");
+    }
+
+    @Test
+    void testProto(){
+        int movieId = 1;
+        String title = "Fandango";
+        String genres = "Comedy";
+
+        DatabaseProtos.Movie movie =
+            DatabaseProtos.Movie.newBuilder()
+                .setMovieId(movieId)
+                .setTitle(title)
+                .setGenres(genres)
+                .build();
+
+        assertEquals(movie.getMovieId(), movieId);
+        assertEquals(movie.getTitle(), title);
+        assertEquals(movie.getGenres(), genres);
     }
 
     @Test
