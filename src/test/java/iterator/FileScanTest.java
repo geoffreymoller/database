@@ -37,7 +37,7 @@ class FileScanTest {
 
     @BeforeEach
     void setUp() {
-        schema = new Schema("/Users/geoffreymoller/Code/database/src/test/resources/next/");
+        schema = new Schema("/Users/geoffreymoller/Code/database/ml-20m/");
     }
 
     @Test
@@ -75,11 +75,12 @@ class FileScanTest {
                         writeStream(Lists.newArrayList(movie), outputstream);
                         break;
                     case LINKS:
+                        int tmdbId = parts.length == 2 ? 0 : Integer.parseInt(parts[2]);
                         DatabaseProtos.Link link =
                             DatabaseProtos.Link.newBuilder()
                                 .setMovieId(Integer.parseInt(parts[0]))
                                 .setImdbId(Integer.parseInt(parts[1]))
-                                .setTmdbId(Integer.parseInt(parts[2]))
+                                .setTmdbId(tmdbId)
                                 .build();
                         writeStream(Lists.newArrayList(link), outputstream);
                         break;
