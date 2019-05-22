@@ -1,6 +1,6 @@
 package iterator;
 
-import db.Database;
+import db.Schema;
 import db.FieldMap;
 import entity.Tuple;
 
@@ -9,23 +9,28 @@ import java.util.function.BiFunction;
 
 public class Join implements Iterator {
 
-    private final Selection s1;
-    private Selection s2;
+    private final Iterator s1;
+    private Iterator s2;
     private final BiFunction<Tuple, Tuple, Boolean> f;
-    private final Database db;
+    private final Schema schema;
     private final java.util.Iterator<Tuple> iterator;
 
-    public Database getDb() {
-        return db;
+    public Schema getSchema() {
+        return schema;
     }
 
-    Join(Selection s1, Selection s2, BiFunction<Tuple, Tuple, Boolean> f, Database db) {
+    Join(Iterator s1, Iterator s2, BiFunction<Tuple, Tuple, Boolean> f, Schema schema) {
         this.s1 = s1;
         this.s2 = s2;
         this.f = f;
-        this.db = db;
+        this.schema = schema;
         JoinGenerator generator = new JoinGenerator();
         this.iterator = generator.iterator();
+    }
+
+    @Override
+    public void init() {
+
     }
 
     public Tuple next() {
@@ -43,7 +48,7 @@ public class Join implements Iterator {
             while (t1 != null) {
                 Tuple t2 = s2.next();
                 if(t2 == null){
-                   s2 = new Selection(s2.getTableName(), s2.getPredicate(), s2.getDb());
+                   s2.init();
                    continue;
                 }
                 while (t2 != null) {
@@ -51,7 +56,7 @@ public class Join implements Iterator {
                         LinkedHashMap<String, FieldMap> sum = new LinkedHashMap<>();
                         sum.putAll(t1.getAttributeMap());
                         sum.putAll(t2.getAttributeMap());
-                        yield(new Tuple(db, t1.getTableName()+"-"+t2.getTableName(), sum));
+                        yield(new Tuple(schema, t1.getTableName()+"-"+t2.getTableName(), sum));
                     }
                     t2 = s2.next();
                 }

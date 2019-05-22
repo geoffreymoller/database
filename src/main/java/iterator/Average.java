@@ -1,7 +1,7 @@
 //TODO - treat aggregation iterators as a tuple with length 1
 package iterator;
 
-import db.Database;
+import db.Schema;
 import db.Field;
 import db.FieldMap;
 import entity.Tuple;
@@ -17,15 +17,19 @@ public class Average implements Iterator {
     private Double count = 0d;
     private String attribute;
     private String tableName;
-    private Database db;
+    private Schema schema;
 
-    public Average(String tableName, Predicate<Tuple> f, String attribute, Database db) {
+    public Average(String tableName, Predicate<Tuple> f, String attribute, Schema schema) {
         this.tableName = tableName;
-        this.db = db;
-        Predicate<Tuple> p = t -> true;
+        this.schema = schema;
         this.attribute = attribute;
-        this.selection = new Selection(tableName, p, db);
         this.predicate = f;
+        this.init();
+    }
+
+    @Override
+    public void init() {
+        this.selection = new Selection(tableName, predicate, schema);
     }
 
     public Tuple next() {
@@ -39,7 +43,7 @@ public class Average implements Iterator {
         HashMap<String, FieldMap> m = new HashMap<>();
         FieldMap fm = new FieldMap(Double.toString(avg), new Field("aggregate", "average", Double.TYPE, false));
         m.put("average-aggregate", fm);
-        return new Tuple(db, "average", m);
+        return new Tuple(schema, "average", m);
     }
 
     @Override

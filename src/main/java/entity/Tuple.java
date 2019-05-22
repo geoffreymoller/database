@@ -1,7 +1,7 @@
 package entity;
 
 import com.google.common.collect.Lists;
-import db.Database;
+import db.Schema;
 import db.Field;
 import db.FieldMap;
 
@@ -10,7 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public final class Tuple {
-    private final Database db;
+    private final Schema schema;
     private final String tableName;
     private final Map<String, FieldMap> attributeMap;
 
@@ -18,8 +18,8 @@ public final class Tuple {
         return tableName;
     }
 
-    public Database getDb() {
-        return db;
+    public Schema getSchema() {
+        return schema;
     }
 
     public Map<String, FieldMap> getAttributeMap() {
@@ -27,21 +27,21 @@ public final class Tuple {
     }
 
     //projection, join
-    public Tuple(Database db, String tableName, Map<String, FieldMap> map) {
-        this.db = db;
+    public Tuple(Schema schema, String tableName, Map<String, FieldMap> map) {
+        this.schema = schema;
         this.attributeMap = map;
         this.tableName = tableName;
     }
 
-    //db row
-    public Tuple(Database db, String tableName, String data) {
-        Map<String, FieldMap> map = makeFieldMap(db, tableName, data);
-        this.db = db;
+    //schema row
+    public Tuple(Schema schema, String tableName, String data) {
+        Map<String, FieldMap> map = makeFieldMap(schema, tableName, data);
+        this.schema = schema;
         this.attributeMap = map;
         this.tableName = tableName;
     }
 
-    private Map<String, FieldMap> makeFieldMap(Database db, String tableName, String data) {
+    private Map<String, FieldMap> makeFieldMap(Schema db, String tableName, String data) {
         ArrayList<String> attributes = Lists.newArrayList(data.split(","));
         Map<String, Field> fields = db.getSchema().get(tableName).getFields();
         ArrayList<String> keys = new ArrayList<>(fields.keySet());
@@ -76,7 +76,7 @@ public final class Tuple {
     @Override
     public String toString() {
         return "Tuple{" +
-            "db=" + db +
+            "schema=" + schema +
             ", tableName='" + tableName + '\'' +
             ", attributeMap=" + attributeMap +
             '}';

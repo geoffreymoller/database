@@ -1,6 +1,6 @@
 //package query;
 //
-//import db.Database;
+//import db.Schema;
 //import entity.Tuple;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;
@@ -12,11 +12,11 @@
 //
 //class PredicateBuilderDoubleTest {
 //
-//    private Database db;
+//    private Schema db;
 //
 //    @BeforeEach
 //    void setUp() {
-//        db = new Database("/Users/geoffreymoller/Code/database/src/test/resources/next/");
+//        db = new Schema("/Users/geoffreymoller/Code/database/src/test/resources/next/");
 //    }
 //
 //    @Test

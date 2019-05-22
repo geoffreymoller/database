@@ -97,7 +97,7 @@ index 284464a..0000000
 @@ -1,77 +0,0 @@
 -package query;
 -
--import db.Database;
+-import schema.Schema;
 -import entity.Tuple;
 -import org.junit.jupiter.api.BeforeEach;
 -import org.junit.jupiter.api.Test;
@@ -109,65 +109,65 @@ index 284464a..0000000
 -
 -class PredicateBuilderFloatTest {
 -
--    private Database db;
+-    private Database schema;
 -
 -    @BeforeEach
 -    void setUp() {
--        db = new Database("/Users/geoffreymoller/Code/database/src/test/resources/next/");
+-        schema = new Database("/Users/geoffreymoller/Code/database/src/test/resources/next/");
 -    }
 -
 -    @Test
 -    void testFloatEqualityTrue() {
--        Tuple t = new Tuple(db, "ratings", "1,2,3.5,1112486027");
+-        Tuple t = new Tuple(schema, "ratings", "1,2,3.5,1112486027");
 -        Predicate<Tuple> f = new PredicateBuilder().build(t, "rating = 3.5");
 -        assertTrue(f.test(t));
 -    }
 -
 -    @Test
 -    void testFloatEqualityFalse() {
--        Tuple t = new Tuple(db, "ratings", "1,2,3.5,1112486027");
+-        Tuple t = new Tuple(schema, "ratings", "1,2,3.5,1112486027");
 -        Predicate<Tuple> f = new PredicateBuilder().build(t, "rating = 3.4");
 -        assertFalse(f.test(t));
 -    }
 -
 -    @Test
 -    void testFloatInequalityTrue() {
--        Tuple t = new Tuple(db, "ratings", "1,2,3.5,1112486027");
+-        Tuple t = new Tuple(schema, "ratings", "1,2,3.5,1112486027");
 -        Predicate<Tuple> f = new PredicateBuilder().build(t, "rating != 3.4");
 -        assertTrue(f.test(t));
 -    }
 -
 -    @Test
 -    void testFloatInequalityFalse() {
--        Tuple t = new Tuple(db, "ratings", "1,2,3.5,1112486027");
+-        Tuple t = new Tuple(schema, "ratings", "1,2,3.5,1112486027");
 -        Predicate<Tuple> f = new PredicateBuilder().build(t, "rating != 3.5");
 -        assertFalse(f.test(t));
 -    }
 -
 -    @Test
 -    void testFloatLessThanTrue() {
--        Tuple t = new Tuple(db, "ratings", "1,2,3.5,1112486027");
+-        Tuple t = new Tuple(schema, "ratings", "1,2,3.5,1112486027");
 -        Predicate<Tuple> f = new PredicateBuilder().build(t, "rating < 3.6");
 -        assertTrue(f.test(t));
 -    }
 -
 -    @Test
 -    void testFloatLessThanFalse() {
--        Tuple t = new Tuple(db, "ratings", "1,2,3.5,1112486027");
+-        Tuple t = new Tuple(schema, "ratings", "1,2,3.5,1112486027");
 -        Predicate<Tuple> f = new PredicateBuilder().build(t, "rating < 3.5");
 -        assertFalse(f.test(t));
 -    }
 -
 -    @Test
 -    void testFloatGreaterThanTrue() {
--        Tuple t = new Tuple(db, "ratings", "1,2,3.5,1112486027");
+-        Tuple t = new Tuple(schema, "ratings", "1,2,3.5,1112486027");
 -        Predicate<Tuple> f = new PredicateBuilder().build(t, "rating > 3.4");
 -        assertTrue(f.test(t));
 -    }
 -
 -    @Test
 -    void testFloatGreaterThanFalse() {
--        Tuple t = new Tuple(db, "ratings", "1,2,3.5,1112486027");
+-        Tuple t = new Tuple(schema, "ratings", "1,2,3.5,1112486027");
 -        Predicate<Tuple> f = new PredicateBuilder().build(t, "rating > 3.5");
 -        assertFalse(f.test(t));
 -    }
@@ -180,7 +180,7 @@ index aa2b46c..5633a11 100644
 @@ -22,56 +22,56 @@ class PredicateBuilderIntTest {
      @Test
      void testIntEqualityTrue() {
-         Tuple t = new Tuple(db, "links", "1,1,1");
+         Tuple t = new Tuple(schema, "links", "1,1,1");
 -        Predicate<Tuple> f = new PredicateBuilder().build(t, "movieId = 1");
 +        Predicate<Tuple> f = new PredicateBuilder().build(t.get("movieId"), "=", 1);
          assertTrue(f.test(t));
@@ -188,7 +188,7 @@ index aa2b46c..5633a11 100644
  
      @Test
      void testIntEqualityFalse() {
-         Tuple t = new Tuple(db, "links", "2,1,1");
+         Tuple t = new Tuple(schema, "links", "2,1,1");
 -        Predicate<Tuple> f = new PredicateBuilder().build(t, "movieId = 1");
 +        Predicate<Tuple> f = new PredicateBuilder().build(t.get("movieId"), "=", 1);
          assertFalse(f.test(t));
@@ -196,7 +196,7 @@ index aa2b46c..5633a11 100644
  
      @Test
      void testIntInequalityTrue() {
-         Tuple t = new Tuple(db, "links", "1,1,1");
+         Tuple t = new Tuple(schema, "links", "1,1,1");
 -        Predicate<Tuple> f = new PredicateBuilder().build(t, "movieId != 2");
 +        Predicate<Tuple> f = new PredicateBuilder().build(t.get("movieId"), "!=", 2);
          assertTrue(f.test(t));
@@ -204,7 +204,7 @@ index aa2b46c..5633a11 100644
  
      @Test
      void testIntInequalityFalse() {
-         Tuple t = new Tuple(db, "links", "2,1,1");
+         Tuple t = new Tuple(schema, "links", "2,1,1");
 -        Predicate<Tuple> f = new PredicateBuilder().build(t, "movieId != 2");
 +        Predicate<Tuple> f = new PredicateBuilder().build(t.get("movieId"), "!=", 2);
          assertFalse(f.test(t));
@@ -212,7 +212,7 @@ index aa2b46c..5633a11 100644
  
      @Test
      void testIntLessThanTrue() {
-         Tuple t = new Tuple(db, "links", "1,1,1");
+         Tuple t = new Tuple(schema, "links", "1,1,1");
 -        Predicate<Tuple> f = new PredicateBuilder().build(t, "movieId < 2");
 +        Predicate<Tuple> f = new PredicateBuilder().build(t.get("movieId"), "<", 2);
          assertTrue(f.test(t));
@@ -220,7 +220,7 @@ index aa2b46c..5633a11 100644
  
      @Test
      void testIntLessThanFalse() {
-         Tuple t = new Tuple(db, "links", "1,1,1");
+         Tuple t = new Tuple(schema, "links", "1,1,1");
 -        Predicate<Tuple> f = new PredicateBuilder().build(t, "movieId < 1");
 +        Predicate<Tuple> f = new PredicateBuilder().build(t.get("movieId"), "<", 1);
          assertFalse(f.test(t));
@@ -228,7 +228,7 @@ index aa2b46c..5633a11 100644
  
      @Test
      void testIntGreaterThanTrue() {
-         Tuple t = new Tuple(db, "links", "1,1,1");
+         Tuple t = new Tuple(schema, "links", "1,1,1");
 -        Predicate<Tuple> f = new PredicateBuilder().build(t, "movieId > 0");
 +        Predicate<Tuple> f = new PredicateBuilder().build(t.get("movieId"), ">", 0);
          assertTrue(f.test(t));
@@ -236,7 +236,7 @@ index aa2b46c..5633a11 100644
  
      @Test
      void testIntGreaterThanFalse() {
-         Tuple t = new Tuple(db, "links", "1,1,1");
+         Tuple t = new Tuple(schema, "links", "1,1,1");
 -        Predicate<Tuple> f = new PredicateBuilder().build(t, "movieId > 1");
 +        Predicate<Tuple> f = new PredicateBuilder().build(t.get("movieId"), ">", 1);
          assertFalse(f.test(t));
@@ -249,7 +249,7 @@ index caa0540..ad3d887 100644
 @@ -1,14 +1,14 @@
  package query;
  
- import db.Database;
+ import schema.Schema;
 -import entity.Movie;
  import entity.Tuple;
  import org.junit.jupiter.api.BeforeEach;
@@ -266,7 +266,7 @@ index caa0540..ad3d887 100644
 @@ -22,56 +22,56 @@ class PredicateBuilderStringTest {
      @Test
      void testStringEqualityTrue() {
-         Tuple t = new Tuple(db, "movies", "1,Fandango,Comedy");
+         Tuple t = new Tuple(schema, "movies", "1,Fandango,Comedy");
 -        Predicate<Tuple> f = new PredicateBuilder().build(t, "title = Fandango");
 +        Predicate<Tuple> f = new PredicateBuilder().build(t.get("title"), "=", "Fandango");
          assertTrue(f.test(t));
@@ -274,7 +274,7 @@ index caa0540..ad3d887 100644
  
      @Test
      void testStringEqualityFalse() {
-         Tuple t = new Tuple(db, "movies", "1,Fandango,Comedy");
+         Tuple t = new Tuple(schema, "movies", "1,Fandango,Comedy");
 -        Predicate<Tuple> f = new PredicateBuilder().build(t, "title = Stripes");
 +        Predicate<Tuple> f = new PredicateBuilder().build(t.get("title"), "=", "Stripes");
          assertFalse(f.test(t));
@@ -282,7 +282,7 @@ index caa0540..ad3d887 100644
  
      @Test
      void testStringInequalityTrue() {
-         Tuple t = new Tuple(db, "movies", "1,Fandanga,Comedy");
+         Tuple t = new Tuple(schema, "movies", "1,Fandanga,Comedy");
 -        Predicate<Tuple> f = new PredicateBuilder().build(t, "title != Fandango");
 +        Predicate<Tuple> f = new PredicateBuilder().build(t.get("title"), "!=", "Fandango");
          assertTrue(f.test(t));
@@ -290,7 +290,7 @@ index caa0540..ad3d887 100644
  
      @Test
      void testStringInequalityFalse() {
-         Tuple t = new Tuple(db, "movies", "1,Fandango,Comedy");
+         Tuple t = new Tuple(schema, "movies", "1,Fandango,Comedy");
 -        Predicate<Tuple> f = new PredicateBuilder().build(t, "title != Fandango");
 +        Predicate<Tuple> f = new PredicateBuilder().build(t.get("title"), "!=", "Fandango");
          assertFalse(f.test(t));
@@ -298,7 +298,7 @@ index caa0540..ad3d887 100644
  
      @Test
      void testStringLessThanTrue() {
-         Tuple t = new Tuple(db, "movies", "1,Fandango,Comedy");
+         Tuple t = new Tuple(schema, "movies", "1,Fandango,Comedy");
 -        Predicate<Tuple> f = new PredicateBuilder().build(t, "title < Fandangy");
 +        Predicate<Tuple> f = new PredicateBuilder().build(t.get("title"), "<", "Fandangy");
          assertTrue(f.test(t));
@@ -306,7 +306,7 @@ index caa0540..ad3d887 100644
  
      @Test
      void testStringLessThanFalse() {
-         Tuple t = new Tuple(db, "movies", "1,Fandango,Comedy");
+         Tuple t = new Tuple(schema, "movies", "1,Fandango,Comedy");
 -        Predicate<Tuple> f = new PredicateBuilder().build(t, "title < Fandanga");
 +        Predicate<Tuple> f = new PredicateBuilder().build(t.get("title"), "<", "Fandanga");
          assertFalse(f.test(t));
@@ -314,7 +314,7 @@ index caa0540..ad3d887 100644
  
      @Test
      void testStringGreaterThanTrue() {
-         Tuple t = new Tuple(db, "movies", "1,Fandango,Comedy");
+         Tuple t = new Tuple(schema, "movies", "1,Fandango,Comedy");
 -        Predicate<Tuple> f = new PredicateBuilder().build(t, "title > Fandanga");
 +        Predicate<Tuple> f = new PredicateBuilder().build(t.get("title"), ">", "Fandanga");
          assertTrue(f.test(t));
@@ -322,7 +322,7 @@ index caa0540..ad3d887 100644
  
      @Test
      void testStringGreaterThanFalse() {
-         Tuple t = new Tuple(db, "movies", "1,Fandango,Comedy");
+         Tuple t = new Tuple(schema, "movies", "1,Fandango,Comedy");
 -        Predicate<Tuple> f = new PredicateBuilder().build(t, "title > Fandangy");
 +        Predicate<Tuple> f = new PredicateBuilder().build(t.get("title"), ">", "Fandangy");
          assertFalse(f.test(t));

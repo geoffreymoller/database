@@ -1,6 +1,6 @@
 package iterator;
 
-import db.Database;
+import db.Schema;
 import db.FieldMap;
 import entity.Tuple;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,18 +9,18 @@ import org.junit.jupiter.api.Test;
 import java.util.Map;
 import java.util.function.Predicate;
 
-import static db.Database.IMDB_ID;
-import static db.Database.LINKS;
-import static db.Database.MOVIE_ID;
+import static db.Schema.IMDB_ID;
+import static db.Schema.LINKS;
+import static db.Schema.MOVIE_ID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ProjectionTest {
 
-    private Database db;
+    private Schema schema;
 
     @BeforeEach
     void setUp() {
-        db = new Database("/Users/geoffreymoller/Code/database/src/test/resources/next/");
+        schema = new Schema("/Users/geoffreymoller/Code/database/src/test/resources/next/");
     }
 
     @Test
@@ -29,8 +29,7 @@ class ProjectionTest {
         String movieIdKey = "movieId-links";
         String imdbIdKey = "imdbId-links";
 
-        Predicate<Tuple> predicate = item -> true;
-        Selection selection = new Selection(LINKS, predicate, db);
+        Selection selection = new Selection(LINKS, p -> true, schema);
         Projection p = new Projection(selection, movieIdKey+","+imdbIdKey);
         Tuple t = p.next();
         Map<String, FieldMap> attributes = t.getAttributeMap();

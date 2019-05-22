@@ -1,6 +1,6 @@
 package iterator;
 
-import db.Database;
+import db.Schema;
 import entity.Tuple;
 
 import java.util.function.Predicate;
@@ -10,7 +10,7 @@ public class Selection implements Iterator {
     private Predicate<Tuple> predicate;
     private FileScan fileScan;
     private String tableName;
-    private Database db;
+    private Schema schema;
 
     public Predicate<Tuple> getPredicate() {
         return predicate;
@@ -24,15 +24,19 @@ public class Selection implements Iterator {
         return tableName;
     }
 
-    public Database getDb() {
-        return db;
+    public Schema getSchema() {
+        return schema;
     }
 
-    public Selection(String tableName, Predicate<Tuple> p, Database db) {
+    public Selection(String tableName, Predicate<Tuple> p, Schema schema) {
         this.tableName = tableName;
-        this.db = db;
-        this.fileScan = new FileScan(tableName, db);
+        this.schema = schema;
         this.predicate = p;
+        this.init();
+    }
+
+    public void init(){
+        this.fileScan = new FileScan(this);
     }
 
     public Tuple next() {

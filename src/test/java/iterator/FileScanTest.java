@@ -1,32 +1,32 @@
 package iterator;
 
-import db.Database;
+import db.Schema;
 import entity.Tuple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static db.Database.GENRES;
-import static db.Database.IMDB_ID;
-import static db.Database.MOVIE_ID;
-import static db.Database.RATING;
-import static db.Database.TIMESTAMP;
-import static db.Database.TITLE;
-import static db.Database.TMDB_ID;
-import static db.Database.USER_ID;
+import static db.Schema.GENRES;
+import static db.Schema.IMDB_ID;
+import static db.Schema.MOVIE_ID;
+import static db.Schema.RATING;
+import static db.Schema.TIMESTAMP;
+import static db.Schema.TITLE;
+import static db.Schema.TMDB_ID;
+import static db.Schema.USER_ID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class FileScanTest {
 
-    Database db;
+    Schema schema;
 
     @BeforeEach
     void setUp() {
-        db = new Database("/Users/geoffreymoller/Code/database/src/test/resources/next/");
+        schema = new Schema("/Users/geoffreymoller/Code/database/src/test/resources/next/");
     }
 
     @Test
     void testLinks() {
-        FileScan fs = new FileScan("links", db);
+        FileScan fs = new FileScan(new Selection("links", p -> true, schema));
         Tuple t = fs.next();
 
         assertEquals(1, t.get(MOVIE_ID, t.getTableName()));
@@ -41,7 +41,7 @@ class FileScanTest {
 
     @Test
     void testRatings() {
-        FileScan fs = new FileScan("ratings", db);
+        FileScan fs = new FileScan(new Selection("ratings", p -> true, schema));
         Tuple t = fs.next();
 
         assertEquals(1, t.get(USER_ID, t.getTableName()));
@@ -58,7 +58,7 @@ class FileScanTest {
 
     @Test
     void testMovies() {
-        FileScan fs = new FileScan("movies", db);
+        FileScan fs = new FileScan(new Selection("movies", p -> true, schema));
         Tuple t = fs.next();
 
         assertEquals(1, t.get(MOVIE_ID, t.getTableName()));

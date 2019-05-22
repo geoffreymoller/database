@@ -15,7 +15,7 @@ public class PredicateBuilder {
         String value = parts[2];
 
         return t -> {
-            Class klass = tuple.getDb().getSchema()
+            Class klass = tuple.getSchema().getSchema()
                 .get(tuple.getTableName()).getFields().get(attribute).getType();
             if (klass.equals(Integer.TYPE)) {
                 switch (operator) {

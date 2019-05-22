@@ -1,14 +1,14 @@
-import db.Database;
+import db.Schema;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class DatabaseTest {
+class SchemaTest {
 
     @Test
     void init() {
         String path = "/foo/bar";
-        Database db = new Database(path);
-        assertEquals(path, db.getPath());
+        Schema schema = new Schema(path);
+        assertEquals(path, schema.getPath());
     }
 
 }

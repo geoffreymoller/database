@@ -5,7 +5,7 @@ import java.util.Map;
 
 import static java.util.Map.entry;
 
-public class Database {
+public class Schema {
 
 
     public static final String RATINGS = "ratings";
@@ -27,7 +27,7 @@ public class Database {
 
     private Map<String, Table> schema;
 
-    public Database(String path) {
+    public Schema(String path) {
         this.path = path;
         this.schema = buildSchema();
     }

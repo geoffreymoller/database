@@ -1,7 +1,7 @@
 //TODO - import CSV tables to your encoding
 package iterator;
 
-import db.Database;
+import db.Schema;
 import entity.Tuple;
 
 import java.io.BufferedReader;
@@ -14,23 +14,28 @@ import java.io.InputStreamReader;
 public class FileScan implements Iterator {
 
     private final String tableName;
-    private final Database db;
+    private final Schema schema;
     private BufferedReader bufferedReader;
     private String line;
     private int i = 0;
 
-    public FileScan(String tableName, Database db) {
-        this.db = db;
-        this.tableName = tableName;
+    public FileScan(Selection selection) {
+        this.schema = selection.getSchema();
+        this.tableName = selection.getTableName();
         InputStream inputstream;
         try {
-            inputstream = new FileInputStream(db.getPath() +
+            inputstream = new FileInputStream(schema.getPath() +
                 tableName +
                 ".csv");
             bufferedReader = new BufferedReader(new InputStreamReader(inputstream));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void init() {
+
     }
 
     public Tuple next() {
@@ -49,7 +54,7 @@ public class FileScan implements Iterator {
             return null;
         }
 
-        entity = new Tuple(db, tableName, line);
+        entity = new Tuple(schema, tableName, line);
         i += 1;
         return entity;
     }

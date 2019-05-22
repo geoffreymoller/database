@@ -10,16 +10,23 @@ import java.util.Map;
 
 public class Projection implements Iterator {
 
-    private final ArrayList<String> columns;
-    private final Selection s;
+    private ArrayList<String> columns;
+    private final Iterator t;
+    private final String columnString;
 
-    Projection(Selection s, String columns) {
-        this.columns = Lists.newArrayList(columns.split(","));
-        this.s = s;
+    Projection(Iterator t, String columns) {
+        this.columnString = columns;
+        this.t = t;
+        this.init();
+    }
+
+    @Override
+    public void init() {
+        this.columns = Lists.newArrayList(columnString.split(","));
     }
 
     public Tuple next() {
-        Tuple next = s.next();
+        Tuple next = t.next();
         Map<String, FieldMap> map = next.getAttributeMap();
         Map<String, FieldMap> dest = new LinkedHashMap<>();
         map.keySet().forEach(fieldName -> {
@@ -28,7 +35,7 @@ public class Projection implements Iterator {
                 dest.put(fieldName, field);
             }
         });
-        return new Tuple(next.getDb(), next.getTableName(), dest);
+        return new Tuple(next.getSchema(), next.getTableName(), dest);
     }
 
     public void close() {
