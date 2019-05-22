@@ -8,7 +8,6 @@ public class PredicateBuilder {
 
     public Predicate<Tuple> build(Tuple tuple, String sql) {
 
-        //TODO - from stack/array?
         String[] parts = sql.split(" ");
         String attribute = parts[0];
         String operator = parts[1];

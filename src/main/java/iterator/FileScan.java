@@ -1,4 +1,3 @@
-//TODO - import CSV tables to your encoding
 package iterator;
 
 import db.Schema;
@@ -29,6 +28,8 @@ public class FileScan implements Iterator {
         this.init();
     }
 
+    //TODO - protobuf Java
+    //TODO - import CSV tables to your encoding (which is the protobuf encoding)
     @Override
     public void init() {
         i = 0;

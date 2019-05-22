@@ -32,7 +32,6 @@ public class Selection implements Iterator {
 
     public Tuple next() {
         Tuple next = this.child.next();
-        //TODO - null or throw?
         while(next != null && !predicate.test(next)){
             next = this.child.next();
         }

@@ -1,4 +1,3 @@
-//TODO - treat aggregation iterators as a tuple with length 1
 package iterator;
 
 import db.Field;
@@ -32,7 +31,7 @@ public class Average implements Iterator {
         Tuple next = child.next();
         while(next != null){
             count++;
-            //TODO - clean up Tuple.get
+            //TODO - generalize Average across types
             total += (Double) next.get(attribute);
             next = child.next();
         }
