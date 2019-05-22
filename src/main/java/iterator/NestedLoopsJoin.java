@@ -7,7 +7,7 @@ import entity.Tuple;
 import java.util.LinkedHashMap;
 import java.util.function.BiFunction;
 
-public class Join implements Iterator {
+public class NestedLoopsJoin implements Iterator {
 
     private final Iterator s1;
     private Iterator s2;
@@ -19,7 +19,7 @@ public class Join implements Iterator {
         return schema;
     }
 
-    Join(Iterator s1, Iterator s2, BiFunction<Tuple, Tuple, Boolean> f, Schema schema) {
+    NestedLoopsJoin(Iterator s1, Iterator s2, BiFunction<Tuple, Tuple, Boolean> f, Schema schema) {
         this.s1 = s1;
         this.s2 = s2;
         this.f = f;

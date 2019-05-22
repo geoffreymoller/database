@@ -15,7 +15,7 @@ import static db.Schema.MOVIE_ID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-class JoinTest {
+class NestedLoopsJoinTest {
 
     private Schema schema;
 
@@ -35,7 +35,7 @@ class JoinTest {
         BiFunction<Tuple, Tuple, Boolean> joinPredicate = (tuple, tuple2) ->
             tuple.get(MOVIE_ID) == tuple2.get(MOVIE_ID);
 
-        Join j = new Join(selectionLinks, selectionMovies, joinPredicate, schema);
+        NestedLoopsJoin j = new NestedLoopsJoin(selectionLinks, selectionMovies, joinPredicate, schema);
         Tuple t = j.next();
         int i = 0;
         while (t != null) {
