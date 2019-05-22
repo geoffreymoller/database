@@ -1,3 +1,4 @@
+//TODO - treat aggregation iterators as a tuple with length 1
 package iterator;
 
 import db.Database;
@@ -30,6 +31,11 @@ public class Average implements Iterator {
             next = selection.next();
         }
         return total/count;
+    }
+
+    @Override
+    public void close() {
+
     }
 
 }

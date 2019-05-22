@@ -1,3 +1,4 @@
+//TODO - import CSV tables to your encoding
 package iterator;
 
 import db.Database;

@@ -12,7 +12,6 @@ public class Join implements Iterator {
     private Selection s2;
     private final BiFunction<Tuple, Tuple, Boolean> f;
     private final Database db;
-    private final JoinGenerator generator;
     private final java.util.Iterator<Tuple> iterator;
 
     public Database getDb() {
@@ -24,7 +23,7 @@ public class Join implements Iterator {
         this.s2 = s2;
         this.f = f;
         this.db = db;
-        this.generator = new JoinGenerator();
+        JoinGenerator generator = new JoinGenerator();
         this.iterator = generator.iterator();
     }
 

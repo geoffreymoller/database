@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 class JoinTest {
 
-    Database db;
+    private Database db;
 
     @BeforeEach
     void setUp() {
