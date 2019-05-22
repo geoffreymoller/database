@@ -1,10 +1,20 @@
 package iterator;
 
+import com.google.common.collect.Lists;
+import com.google.protobuf.Message;
 import db.DatabaseProtos;
 import db.Schema;
 import entity.Tuple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
 
 import static db.Schema.GENRES;
 import static db.Schema.IMDB_ID;
@@ -26,11 +36,12 @@ class FileScanTest {
     }
 
     @Test
-    void testProto(){
-        int movieId = 1;
+    void testProto() throws Exception {
+        String filePath = "/Users/geoffreymoller/Code/database/src/main/java/db/movies";
+
+        int movieId = 14;
         String title = "Fandango";
         String genres = "Comedy";
-
         DatabaseProtos.Movie movie =
             DatabaseProtos.Movie.newBuilder()
                 .setMovieId(movieId)
@@ -38,9 +49,44 @@ class FileScanTest {
                 .setGenres(genres)
                 .build();
 
+        DatabaseProtos.Movie movie2 =
+            DatabaseProtos.Movie.newBuilder()
+                .setMovieId(15)
+                .setTitle(title)
+                .setGenres(genres)
+                .build();
+
         assertEquals(movie.getMovieId(), movieId);
         assertEquals(movie.getTitle(), title);
         assertEquals(movie.getGenres(), genres);
+
+        File file = new File(filePath);
+        FileOutputStream fop = new FileOutputStream(file);
+        writeStream(Lists.newArrayList(movie, movie2), fop);
+
+        read(filePath);
+    }
+
+    void read(String filePath) throws IOException {
+        FileInputStream stream = new FileInputStream(filePath);
+        while (true) {
+            DatabaseProtos.Movie movie = DatabaseProtos.Movie.parseDelimitedFrom(stream);
+            if (movie == null) {
+                break;  // EOF
+            } else {
+                System.out.println(movie);
+            }
+        }
+    }
+
+    static <MSG extends Message> void writeStream(Iterable<MSG> messages, OutputStream output) throws Exception {
+        try {
+            for (Message message : messages) {
+                message.writeDelimitedTo(output);
+            }
+        } catch (Exception e) {
+            throw new Exception("Unable to write messages", e);
+        }
     }
 
     @Test
