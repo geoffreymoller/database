@@ -3,8 +3,6 @@ package db;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static java.util.Map.entry;
-
 public class Schema {
 
 
@@ -69,12 +67,13 @@ public class Schema {
         tagsFields.put(TIMESTAMP, new Field(TAGS, TIMESTAMP, Integer.TYPE, false));
         Table tags = new Table(TAGS, 4, tagsFields);
 
-        return Map.ofEntries(
-            entry(RATINGS, ratings),
-            entry(MOVIES, movies),
-            entry(LINKS, links),
-            entry(TAGS, tags)
-        );
+        LinkedHashMap<String, Table> m = new LinkedHashMap<>();
+        m.put(RATINGS, ratings);
+        m.put(MOVIES, movies);
+        m.put(LINKS, links);
+        m.put(TAGS, tags);
+
+        return m;
 
     }
 
