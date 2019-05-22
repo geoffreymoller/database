@@ -27,11 +27,13 @@ class JoinTest {
     @Test
     void next() {
         Predicate<Tuple> p = t -> true;
-        Selection selectionLinks = new Selection(LINKS, p, schema);
-        Selection selectionMovies = new Selection(MOVIES, p, schema);
+        FileScan fs = new FileScan(LINKS, schema);
+        FileScan fs2 = new FileScan(MOVIES, schema);
+        Selection selectionLinks = new Selection(p, fs, schema);
+        Selection selectionMovies = new Selection(p, fs2, schema);
 
         BiFunction<Tuple, Tuple, Boolean> joinPredicate = (tuple, tuple2) ->
-            tuple.get(MOVIE_ID, LINKS) == tuple2.get(MOVIE_ID, MOVIES);
+            tuple.get(MOVIE_ID) == tuple2.get(MOVIE_ID);
 
         Join j = new Join(selectionLinks, selectionMovies, joinPredicate, schema);
         Tuple t = j.next();

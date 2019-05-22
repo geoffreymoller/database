@@ -26,10 +26,11 @@ class ProjectionTest {
     @Test
     void next() {
 
-        String movieIdKey = "movieId-links";
-        String imdbIdKey = "imdbId-links";
+        String movieIdKey = "movieId";
+        String imdbIdKey = "imdbId";
 
-        Selection selection = new Selection(LINKS, p -> true, schema);
+        FileScan fs = new FileScan(LINKS, schema);
+        Selection selection = new Selection(p -> true, fs, schema);
         Projection p = new Projection(selection, movieIdKey+","+imdbIdKey);
         Tuple t = p.next();
         Map<String, FieldMap> attributes = t.getAttributeMap();
@@ -40,13 +41,13 @@ class ProjectionTest {
         assertEquals("1", fieldMap.getAttribute());
         assertEquals(MOVIE_ID, fieldMap.getField().getName());
         assertEquals(Integer.TYPE, fieldMap.getField().getType());
-        assertEquals(1, t.get(MOVIE_ID, LINKS));
+        assertEquals(1, t.get(MOVIE_ID));
 
         FieldMap fieldMap1 = attributes.get(imdbIdKey);
         assertEquals("0114709", fieldMap1.getAttribute());
         assertEquals(IMDB_ID, fieldMap1.getField().getName());
         assertEquals(Integer.TYPE, fieldMap1.getField().getType());
-        assertEquals(114709, t.get(IMDB_ID, LINKS));
+        assertEquals(114709, t.get(IMDB_ID));
     }
 
 }

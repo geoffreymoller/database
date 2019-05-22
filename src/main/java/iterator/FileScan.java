@@ -17,11 +17,21 @@ public class FileScan implements Iterator {
     private final Schema schema;
     private BufferedReader bufferedReader;
     private String line;
-    private int i = 0;
+    private int i;
 
-    public FileScan(Selection selection) {
-        this.schema = selection.getSchema();
-        this.tableName = selection.getTableName();
+    public String getTableName() {
+        return tableName;
+    }
+
+    FileScan(String tableName, Schema schema) {
+        this.schema = schema;
+        this.tableName = tableName;
+        this.init();
+    }
+
+    @Override
+    public void init() {
+        i = 0;
         InputStream inputstream;
         try {
             inputstream = new FileInputStream(schema.getPath() +
@@ -31,11 +41,6 @@ public class FileScan implements Iterator {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void init() {
-
     }
 
     public Tuple next() {

@@ -20,9 +20,10 @@ class AverageTest {
 
     @Test
     void next() {
-        Average avg = new Average(RATINGS, i -> true, RATING, schema);
+        FileScan fs = new FileScan(RATINGS, schema);
+        Average avg = new Average(RATING, fs ,schema);
         Tuple next = avg.next();
-        Object actual = next.get("average", "aggregate");
+        Object actual = next.get("average");
         assertEquals(2d, actual);
     }
 
