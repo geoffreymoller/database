@@ -31,7 +31,7 @@ public class ImportCSV {
 
     static void doImport(Schema schema, String tableName) {
         String line;
-        System.out.println(tableName);
+        System.out.println(tableName.toUpperCase());
 
         int i = 0;
         InputStream inputstream;
@@ -42,11 +42,17 @@ public class ImportCSV {
             outputstream = new FileOutputStream(schema.getPath() + tableName);
             bufferedReader = new BufferedReader(new InputStreamReader(inputstream));
             while (true) {
+                i++;
                 line = bufferedReader.readLine();
                 if (line == null) {
                     break;
                 }
                 String[] parts = line.split(",");
+                try {
+                    Integer.parseInt(parts[0]);
+                } catch (Exception e){
+                    continue;
+                }
                 switch (tableName) {
                     case MOVIES:
                         DatabaseProtos.Movie movie =
@@ -78,13 +84,8 @@ public class ImportCSV {
                         writeStream(Lists.newArrayList(rating), outputstream);
                         break;
                     default:
+                        break;
                 }
-                i++;
-                //TODO - this needs betterment; (null, throw, etc)?
-                if (line.equals("")) {
-                    break;
-                }
-                System.out.println(line);
             }
             read(tableName, schema.getPath() + tableName);
         } catch (IOException e) {
