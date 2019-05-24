@@ -49,10 +49,10 @@ public class FileScan implements Iterator {
 
     public Tuple next() {
         try {
-            Class klass = getEntityClass(tableName);
+            Class klass = schema.getSchema().get(tableName).getKlass();
             Method method = Arrays.stream(klass.getDeclaredMethods())
                 .filter(t -> t.getName().contains("parseDelimitedFrom")
-                    && t.getParameterCount() == 1).collect(Collectors.toList()).get(0);
+                    && t.getParameterCount() == 1).findFirst().get();
             Object o = method.invoke(new Object(), inputstream);
             if (o == null) {
                 return null;
@@ -74,24 +74,6 @@ public class FileScan implements Iterator {
         }
 
         return new Tuple(schema, tableName, line);
-    }
-
-    private Class getEntityClass(String tableName) {
-        Class klass;
-        switch (this.tableName) {
-            case MOVIES:
-                klass = DatabaseProtos.Movie.class;
-                break;
-            case LINKS:
-                klass = DatabaseProtos.Link.class;
-                break;
-            case RATINGS:
-                klass = DatabaseProtos.Rating.class;
-                break;
-            default:
-                throw new UnsupportedOperationException();
-        }
-        return klass;
     }
 
     public void close() {

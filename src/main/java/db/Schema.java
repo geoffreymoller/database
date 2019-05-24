@@ -45,33 +45,32 @@ public class Schema {
         ratingsFields.put(MOVIE_ID, new Field(RATINGS, MOVIE_ID, Integer.TYPE, false));
         ratingsFields.put(RATING, new Field(RATINGS, RATING, Double.TYPE, false));
         ratingsFields.put(TIMESTAMP, new Field(RATINGS, TIMESTAMP, Integer.TYPE, false));
-
-        Table ratings = new Table(RATINGS, 1, ratingsFields);
+        Table ratings = new Table(RATINGS, 1, DatabaseProtos.Rating.class, ratingsFields);
 
         LinkedHashMap<String, Field> moviesFields = new LinkedHashMap<>();
         moviesFields.put(MOVIE_ID, new Field(MOVIES, MOVIE_ID, Integer.TYPE, false));
         moviesFields.put(TITLE, new Field(MOVIES, TITLE, String.class, false));
         moviesFields.put(GENRES, new Field(MOVIES, GENRES, String.class, false));
-        Table movies = new Table(MOVIES, 2, moviesFields);
+        Table movies = new Table(MOVIES, 2, DatabaseProtos.Movie.class, moviesFields);
 
         LinkedHashMap<String, Field> linksFields = new LinkedHashMap<>();
         linksFields.put(MOVIE_ID, new Field(LINKS, MOVIE_ID, Integer.TYPE, false));
         linksFields.put(IMDB_ID, new Field(LINKS, IMDB_ID, Integer.TYPE, false));
         linksFields.put(TMDB_ID, new Field(LINKS, TMDB_ID, Integer.TYPE, false));
-        Table links = new Table(LINKS, 3, linksFields);
+        Table links = new Table(LINKS, 3, DatabaseProtos.Link.class, linksFields);
 
         LinkedHashMap<String, Field> tagsFields = new LinkedHashMap<>();
         tagsFields.put(USER_ID, new Field(TAGS, USER_ID, Integer.TYPE, false));
         tagsFields.put(MOVIE_ID, new Field(TAGS, MOVIE_ID, Integer.TYPE, false));
         tagsFields.put(TAG, new Field(TAGS, TAG, String.class, false));
         tagsFields.put(TIMESTAMP, new Field(TAGS, TIMESTAMP, Integer.TYPE, false));
-        Table tags = new Table(TAGS, 4, tagsFields);
+//        Table tags = new Table(TAGS, 4, DatabaseProtos.Tag.class, tagsFields);
 
         LinkedHashMap<String, Table> m = new LinkedHashMap<>();
         m.put(RATINGS, ratings);
         m.put(MOVIES, movies);
         m.put(LINKS, links);
-        m.put(TAGS, tags);
+//        m.put(TAGS, tags);
 
         return m;
 
