@@ -3,7 +3,6 @@ package iterator;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 import db.Schema;
-import entity.Link;
 import entity.Tuple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static db.Schema.IMDB_ID;
 import static db.Schema.LINKS;

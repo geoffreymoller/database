@@ -7,7 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
-import java.util.function.Predicate;
 
 import static db.Schema.IMDB_ID;
 import static db.Schema.LINKS;

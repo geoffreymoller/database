@@ -1,14 +1,22 @@
 package iterator;
 
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
+import db.DatabaseProtos;
+import db.Field;
 import db.Schema;
+import db.Table;
 import entity.Tuple;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class FileScan implements Iterator {
 
@@ -17,6 +25,7 @@ public class FileScan implements Iterator {
     private BufferedReader bufferedReader;
     private String line;
     private int i;
+    private FileInputStream inputstream;
 
     public String getTableName() {
         return tableName;
@@ -34,12 +43,8 @@ public class FileScan implements Iterator {
     @Override
     public void init() {
         i = 0;
-        InputStream inputstream;
         try {
-            inputstream = new FileInputStream(schema.getPath() +
-                tableName +
-                ".csv");
-            bufferedReader = new BufferedReader(new InputStreamReader(inputstream));
+            inputstream = new FileInputStream(schema.getPath() + tableName);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -48,17 +53,29 @@ public class FileScan implements Iterator {
     public Tuple next() {
         Tuple entity;
         try {
-            if (i == 0) {
-                line = bufferedReader.readLine();
+            DatabaseProtos.Movie movie = DatabaseProtos.Movie.parseDelimitedFrom(inputstream);
+            Table table = schema.getSchema().get(tableName);
+            ArrayList<String> fields = Lists.newArrayList();
+            table.getFields().keySet().forEach(fk -> {
+                String methodName = "get" + StringUtils.capitalize(fk);
+                try {
+                    Method method = DatabaseProtos.Movie.class.getMethod(methodName);
+                    String value = method.invoke(movie).toString();
+                    fields.add(value);
+                } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            });
+            line = Joiner.on(",").join(fields);
+
+            if (movie == null) {
+                System.out.println("EOF");
+//                    break;  // EOF
+            } else {
+//                System.out.println(movie);
             }
-            line = bufferedReader.readLine();
         } catch (IOException e) {
             e.printStackTrace();
-        }
-
-        //TODO - this needs betterment; (null, throw, etc)?
-        if(line == null || line.equals("")) {
-            return null;
         }
 
         entity = new Tuple(schema, tableName, line);
