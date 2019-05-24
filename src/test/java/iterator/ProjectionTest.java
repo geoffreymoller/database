@@ -43,7 +43,7 @@ class ProjectionTest {
         assertEquals(1, t.get(MOVIE_ID));
 
         FieldMap fieldMap1 = attributes.get(imdbIdKey);
-        assertEquals("0114709", fieldMap1.getAttribute());
+        assertEquals("114709", fieldMap1.getAttribute());
         assertEquals(IMDB_ID, fieldMap1.getField().getName());
         assertEquals(Integer.TYPE, fieldMap1.getField().getType());
         assertEquals(114709, t.get(IMDB_ID));
