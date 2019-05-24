@@ -1,0 +1,25 @@
+package protobuf;
+
+option java_package = "db";
+option java_outer_classname = "DatabaseProtos";
+
+message Movie {
+    required int32 movieId = 1;
+    required string title = 2;
+    required string genres = 3;
+}
+
+message Link {
+    required int32 movieId = 1;
+    required int32 imdbId = 2;
+    required int32 tmdbId = 3;
+}
+
+message Rating {
+    required int32 userId = 1;
+    required int32 movieId = 2;
+    required float rating = 3;
+    required int32 timestamp = 4;
+}
+
+

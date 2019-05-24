@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class FileScanTest {
 
-    Schema schema;
+    private Schema schema;
 
     @BeforeEach
     void setUp() {
