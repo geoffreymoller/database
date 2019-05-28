@@ -14,11 +14,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.stream.Collectors;
-
-import static db.Schema.LINKS;
-import static db.Schema.MOVIES;
-import static db.Schema.RATINGS;
 
 public class FileScan implements Iterator {
 

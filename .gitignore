@@ -1,4 +1,7 @@
 ml-20m
+src/test/resources/next/links
+src/test/resources/next/movies
+src/test/resources/next/ratings
 # Created by .ignore support plugin (hsz.mobi)
 ### Java template
 # Compiled class file
