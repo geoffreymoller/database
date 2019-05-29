@@ -34,7 +34,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 //next
 
 //TODO - on-disk Hash
-  //penalties for multiple IO for each look
+  //penalties for multiple IO for collisions
+//TODO - multiple hash entries per index item
 //TODO - on-disk BTree
 //TODO - record ID / block address
 //TODO - robust varint implementation
@@ -52,8 +53,8 @@ public class IndexTest {
     void testHashIndex() throws IOException {
         String filePath = schema.getPath() + MOVIES;
         int offset = 0;
-        HashMap<String, Index> map = new HashMap<>();
         FileInputStream inputstream = new FileInputStream(filePath);
+        HashIndex<String, Index> hashIndex = new HashIndex<>();
         while (true) {
             DatabaseProtos.Movie movie = DatabaseProtos.Movie.parseDelimitedFrom(inputstream);
             if (movie == null) {
@@ -62,11 +63,11 @@ public class IndexTest {
                 byte[] bytes = movie.toByteArray();
                 int serializedSize = movie.getSerializedSize();
                 String title = movie.getTitle();
-                map.put(title, new Index(offset, serializedSize));
+                hashIndex.put(title, new Index(offset, serializedSize));
                 offset += serializedSize + 1; //TODO - varint is not always 1 byte
                 DatabaseProtos.Movie parsedMovie = DatabaseProtos.Movie.parseFrom(bytes);
 
-                int movieOffset = map.get(movie.getTitle()).getOffset();
+                int movieOffset = hashIndex.get(movie.getTitle()).getOffset();
                 RandomAccessFile file = new RandomAccessFile(filePath, "r");
                 file.seek(movieOffset);
                 int movieLength = file.read();
