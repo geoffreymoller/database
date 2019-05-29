@@ -35,6 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 //TODO - on-disk Hash
   //penalties for multiple IO for collisions
+//TODO - get size from varint, not save to hash
 //TODO - multiple hash entries per index item
 //TODO - on-disk BTree
 //TODO - record ID / block address
@@ -63,7 +64,7 @@ public class IndexTest {
                 byte[] bytes = movie.toByteArray();
                 int serializedSize = movie.getSerializedSize();
                 String title = movie.getTitle();
-                hashIndex.put(title, new Index(offset, serializedSize));
+                hashIndex.put(title, new Index(offset));
                 offset += serializedSize + 1; //TODO - varint is not always 1 byte
                 DatabaseProtos.Movie parsedMovie = DatabaseProtos.Movie.parseFrom(bytes);
 
@@ -95,7 +96,7 @@ public class IndexTest {
                 byte[] bytes = movie.toByteArray();
                 int serializedSize = movie.getSerializedSize();
                 String title = movie.getTitle();
-                btree.put(title, new Index(offset, serializedSize));
+                btree.put(title, new Index(offset));
                 offset += serializedSize + 1; //TODO - varint is not always 1 byte
                 DatabaseProtos.Movie parsedMovie = DatabaseProtos.Movie.parseFrom(bytes);
 
