@@ -93,6 +93,20 @@ public class ImportCSV {
         }
     }
 
+    static <MSG extends Message> void writeStream(Iterable<MSG> messages, OutputStream output) {
+        try {
+            for (Message message : messages) {
+                message.writeDelimitedTo(output);
+            }
+        } catch (Exception e) {
+            try {
+                throw new Exception("Unable to write messages", e);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
     static void read(String type, String filePath) throws IOException {
         FileInputStream stream = new FileInputStream(filePath);
         switch (type) {
@@ -127,20 +141,6 @@ public class ImportCSV {
                 break;
         }
 
-    }
-
-    static <MSG extends Message> void writeStream(Iterable<MSG> messages, OutputStream output) {
-        try {
-            for (Message message : messages) {
-                message.writeDelimitedTo(output);
-            }
-        } catch (Exception e) {
-            try {
-                throw new Exception("Unable to write messages", e);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
     }
 
 }

@@ -33,6 +33,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 //Write index entry
 //next
 
+//TODO - on-disk Hash
+  //penalties for multiple IO for each look
+//TODO - on-disk BTree
+//TODO - record ID / block address
+//TODO - robust varint implementation
 
 public class IndexTest {
 

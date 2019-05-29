@@ -8,10 +8,6 @@
     <artifactId>database</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <properties>
-        <kotlin.version>1.3.31</kotlin.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
