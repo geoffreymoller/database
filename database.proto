@@ -9,6 +9,11 @@ message Movie {
     required string genres = 3;
 }
 
+message MovieIndex {
+    required string title = 1;
+    repeated int32 offsets = 2;
+}
+
 message Link {
     required int32 movieId = 1;
     required int32 imdbId = 2;

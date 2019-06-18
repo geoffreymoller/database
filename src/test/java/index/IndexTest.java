@@ -83,7 +83,44 @@ public class IndexTest {
     }
 
     @Test
+    void testOnDiskHashIndex() throws IOException {
+        String filePath = schema.getPath() + MOVIES;
+        int offset = 0;
+        FileInputStream inputstream = new FileInputStream(filePath);
+        OnDiskHashIndex<String, Index> onDiskHashIndex = new OnDiskHashIndex<>(MOVIES);
+        while (true) {
+            DatabaseProtos.Movie movie = DatabaseProtos.Movie.parseDelimitedFrom(inputstream);
+            if (movie == null) {
+                break;  // EOF
+            } else {
+                byte[] bytes = movie.toByteArray();
+                int serializedSize = movie.getSerializedSize();
+                String title = movie.getTitle();
+                onDiskHashIndex.put(title, new Index(offset));
+                offset += serializedSize + 1; //TODO - varint is not always 1 byte
+                DatabaseProtos.Movie parsedMovie = DatabaseProtos.Movie.parseFrom(bytes);
+
+                int movieOffset = onDiskHashIndex.get(movie.getTitle()).getOffset();
+                RandomAccessFile file = new RandomAccessFile(filePath, "r");
+                file.seek(movieOffset); //no penalty for seek unless we go to disk
+                int movieLength = file.read();
+                bytes = new byte[movieLength];
+                file.read(bytes, 0, movieLength);
+                DatabaseProtos.Movie indexedMovie = DatabaseProtos.Movie.parseFrom(bytes);
+
+                assertEquals(parsedMovie, indexedMovie);
+            }
+        }
+
+    }
+
+
+    @Test
     void testBTreeIndex() throws IOException {
+        //TODO - to create BTree from sorted data
+            //fill first leaf node (half full)
+            //fill second leaf node (half full)
+            //go bottom up to recursively create parent nodes as necessary
         String filePath = schema.getPath() + MOVIES;
         int offset = 0;
         BTree<String, Index> btree = new BTree<>();
